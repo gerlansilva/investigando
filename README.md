@@ -14,8 +14,13 @@ Fases 1 a 9 prontas no código (modelo e estado com desfazer/refazer, fórmulas,
 Ainda não verificado na prática: build nativo do Tauri no Mac, abrir arquivos `.investigando` com duplo clique, impressão em impressora e leitor de tela.
 
 ## Instalar no Mac
-Veja `docs/EMPACOTAR-MAC.md`. O caminho mais simples é o fluxo "Instalador Mac" do GitHub Actions, que gera o `.dmg`.
+Veja `docs/EMPACOTAR-MAC.md`. O caminho mais simples é o fluxo "Instaladores" do GitHub Actions, que gera o `.dmg`.
 
 ## Regras
 - Reimplementar o comportamento do TinkerPlots; não copiar código, imagens nem arquivos .tp3.
 - Código adaptado do CODAP (MIT) deve manter cabeçalho de origem e aviso de copyright do Concord Consortium.
+
+## Documentação
+
+- [Manual do usuário (com imagens)](docs/MANUAL.md)
+- [Instalar no Mac e no Windows](docs/INSTALAR.md)

@@ -3,7 +3,7 @@
 ## Caminho mais simples: GitHub Actions (sem instalar Rust nem Xcode)
 
 1. Crie um repositório no GitHub (pode ser privado) e envie a pasta do projeto (o `.gitignore` já ignora `node_modules`, `dist` e `src-tauri/target`).
-2. Na aba **Actions**, abra o fluxo **Instalador Mac** e clique em **Run workflow**.
+2. Na aba **Actions**, abra o fluxo **Instaladores** e clique em **Run workflow**.
 3. Quando terminar (10 a 20 minutos na primeira vez), baixe o `.dmg` em **Artifacts > Investigando-mac**, abra e arraste o app para Applications.
 4. Se o fluxo falhar, a causa mais provável é um erro de compilação do Rust (nunca foi compilado antes). Copie o texto do erro do log para eu corrigir.
 
