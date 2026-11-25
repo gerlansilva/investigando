@@ -23,4 +23,5 @@ Veja `docs/EMPACOTAR-MAC.md`. O caminho mais simples é o fluxo "Instaladores" d
 ## Documentação
 
 - [Manual do usuário (com imagens)](docs/MANUAL.md)
+- [Bases de dados e importação de CSV](docs/BASES-DE-DADOS.md)
 - [Instalar no Mac e no Windows](docs/INSTALAR.md)
