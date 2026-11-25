@@ -32,6 +32,8 @@ describe('bases embutidas', () => {
     expect(n('incendios').casos).toHaveLength(517);
     expect(n('tamanhos').casos).toHaveLength(106);
     expect(n('olimpiadas-brasil').casos.length).toBeGreaterThan(3000);
+    expect(n('pokemon').casos).toHaveLength(801);
+    expect(n('disney').casos.length).toBeGreaterThan(800);
     const c = n('cereais');
     const acucar = c.atributos.find((a) => a.nome === 'Açúcares')!;
     expect(c.casos.some((k) => k.valores[acucar.id] === null)).toBe(true);

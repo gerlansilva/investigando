@@ -57,4 +57,9 @@ Não vão embutidas: nomes e personagens são marca de terceiros. Quem quiser us
 
 Os créditos de cada base aparecem na tabela inserida no projeto. A licença CC BY-SA dos cereais vale para esses dados, não para o programa.
 
-**Fora do pacote** (importe pelo menu se quiser): Pokémon e Disney+ (marcas registradas de terceiros), Spotify, Bigfoot, Star Wars e Datasaurus (licença desconhecida ou pendente), e a base de sono do Kaggle (licença divergente).
+| Pokémon (1ª a 7ª geração) | 801 | CC0 declarada na fonte | só parte das colunas; tipos em português; aviso de marca registrada nos créditos |
+| Filmes e séries do Disney+ | 894 | CC0 declarada na fonte | sem sinopses, elenco e direção; textos em português; aviso de marca registrada nos créditos |
+
+Pokémon e Disney+ são marcas de terceiros: a licença CC0 vale para a tabela, não para os nomes. Por isso os créditos trazem um aviso e as bases só têm números de referência (sem imagens, sinopses ou textos).
+
+**Fora do pacote** (importe pelo menu se quiser): Spotify, Bigfoot, Star Wars e Datasaurus (licença desconhecida ou pendente), e a base de sono do Kaggle (licença divergente).
