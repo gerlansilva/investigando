@@ -6,7 +6,7 @@ Correções: `src/app/acessibilidade.css` (importado por último em `src/main.ts
 ## Corrigido
 | Área | Achado | Correção |
 |---|---|---|
-| Alvos | Abas de etapa, "Marcar etapa como concluída", seletor de perfil, menus, campos do gráfico e do simulador, fichas e células da tabela tinham 32 a 36 px; alça de redimensionar 28 px; perfil "Anos finais" usava 32 px | Mínimo de 40 px (`--alvo-minimo`), perfil finais com `--alvo: 40px`, alça e barra da janela com 40 px |
+| Alvos | Abas de etapa, "Marcar etapa como concluída", seletor de perfil, menus, campos do gráfico e do simulador, fichas e células da tabela tinham 32 a 36 px; alça de redimensionar 28 px; perfil Completo usava 32 px | Mínimo de 40 px (`--alvo-minimo`), perfil finais com `--alvo: 40px`, alça e barra da janela com 40 px |
 | Contraste | Borda dos campos (select, número, texto, pergunta) com 1,44:1, abaixo dos 3:1 da WCAG 1.4.11 | Borda `--cor-borda-forte` (3,38:1); fichas ganham linha inferior forte |
 | Viewports | 1024/800/600: barra contextual do gráfico saía da tela (rolagem interna escondia ferramentas); 600 px: trilha de etapas estourava a largura (rolagem horizontal da página) | Barra contextual e trilha de etapas quebram linha; aviso com título longo quebra (`overflow-wrap`) |
 | Teclado | Esc no aviso de apagar e Esc/Enter ao renomear jogavam o foco para o `body`; apagar janela também | Foco volta ao menu "Opções", à barra da janela ou à mesa. Esc ao renomear não grava o nome (antes o blur confirmava) |
