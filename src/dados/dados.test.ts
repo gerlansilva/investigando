@@ -26,6 +26,13 @@ describe('bases embutidas', () => {
     expect(c.casos).toHaveLength(100);
     expect(c.atributos[0]!.nome).toBe('Animal');
   });
+  it('sono dos mamíferos: 83 espécies, ausentes preservados', () => {
+    const c = colecaoDaBase(BASES.find((b) => b.id === 'sono')!);
+    expect(c.casos).toHaveLength(83);
+    expect(c.atributos.map((a) => a.nome)).toContain('Sono total');
+    const rem = c.atributos.find((a) => a.nome === 'Sono REM')!;
+    expect(c.casos.some((k) => k.valores[rem.id] === null)).toBe(true);
+  });
 });
 
 describe('CSV', () => {

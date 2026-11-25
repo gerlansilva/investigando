@@ -37,3 +37,11 @@ Quando o Kaggle pedir login, baixe o arquivo `.csv` no computador e use a import
 ## A melhor base é a da turma
 
 Altura, número do calçado, tempo até a escola, brincadeira favorita. A investigação nasce de uma pergunta dos alunos, e o modelo **Pesquisa da turma** já traz as colunas mais comuns. Basta usar **Novo caso** na barra de ferramentas da etapa Dados.
+
+## Sono dos mamíferos
+
+83 espécies com horas de sono total e REM, tempo acordado, massa do corpo e do cérebro. Fonte: Savage e West (2007), via conjunto `msleep` do pacote ggplot2. A licença é "dados de pesquisa publicados, uso educacional, com crédito à fonte" (leitura do projeto; não há licença própria do conjunto). Boa para comparar "quem dorme mais" e relacionar sono com tamanho.
+
+## Pokémon e outras bases com marca registrada
+
+Não vão embutidas: nomes e personagens são marca de terceiros. Quem quiser usar importa o CSV por **Bases de dados → Importar arquivo CSV…**.
