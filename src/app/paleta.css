@@ -254,7 +254,7 @@
 .faixa-ciclo:not([data-etapa='problema']) .pergunta-lembrete { -webkit-line-clamp: 1; }
 .faixa-linha { flex-wrap: wrap; row-gap: 6px; }
 .barra-contextual:empty { visibility: visible; display: flex; align-items: center; margin: 0 var(--e3); padding: 0 var(--e3); border-radius: 18px; background: transparent; }
-.barra-contextual:empty::before { content: 'As ferramentas da janela escolhida aparecem aqui.'; font-size: var(--t-pequeno); color: var(--cor-texto-suave); }
+.barra-contextual:empty::before { content: ''; }
 
 /* Anotações: campo preenchido arredondado (a regra de Texto.css só reforça; esta vence na ordem) */
 .texto-editor { background: var(--cor-camada); border: 0; border-radius: 12px; text-decoration: none; }

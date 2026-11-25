@@ -92,7 +92,7 @@ describe('App', () => {
     Object.assign(URL, { createObjectURL: criar, revokeObjectURL: vi.fn() });
     const cliques: string[] = [];
     vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) { cliques.push(this.download); });
-    render(<App />);
+    render(<App armazem={criarArmazem(criarProjetoExemplo())} />);
     await userEvent.click(screen.getByRole('button', { name: 'Salvar' }));
     expect(cliques).toEqual(['como-viemos-para-a-escola.investigando']);
     expect(screen.getByText('Projeto salvo no arquivo como-viemos-para-a-escola.investigando')).toBeInTheDocument();

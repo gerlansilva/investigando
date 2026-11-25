@@ -6,7 +6,7 @@ import { EXTENSAO, ehTauri, mensagemDeErro, obterArquivos, type ProjetoAberto } 
 import { Ciclo } from './ciclo/Ciclo';
 import { ContextoBarra } from './contextoBarra';
 import { Ferramenta, Separador } from './ui';
-import { criarProjetoExemplo } from './projetoExemplo';
+import { criarProjeto } from '../modelo/fabrica';
 import type { PerfilEnsino } from './tiposObjeto';
 import './estilos.css';
 import { registrarGrafico } from '../objetos/grafico';
@@ -194,7 +194,7 @@ function Conteudo({ armazem }: { armazem: Armazem }) {
 }
 
 export function App({ armazem }: PropsApp = {}) {
-  const [padrao] = useState(() => armazem ?? criarArmazem(criarProjetoExemplo()));
+  const [padrao] = useState(() => armazem ?? criarArmazem(criarProjeto()));
   return (
     <ProvedorArmazem armazem={padrao}>
       <Conteudo armazem={padrao} />
