@@ -190,6 +190,7 @@ export const t = {
       botaoCurto: 'Bases',
       titulo: 'Bases de dados',
       importar: 'Importar arquivo CSV…',
+      modeloDica: 'Preencha a tabela com os dados da turma: use "Novo caso" na barra de ferramentas e escreva em cada célula. Dá para mudar o nome das colunas e criar outras.',
       aviso: (nome: string) => `Dados "${nome}" adicionados à mesa.`,
       erroLeitura: 'Não consegui ler esse arquivo. Use um CSV com títulos na primeira linha.',
       creditos: (fonte: string, licenca: string) => `Fonte: ${fonte}\nLicença: ${licenca}`,

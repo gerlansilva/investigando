@@ -1,10 +1,11 @@
 import { FORMAS_ICONE, caminhoSvg } from './formas';
+import type { LegendaFormas } from './formasPorCategoria';
 import { useEffect, useId, useState } from 'react';
 import type { Atributo } from '../../modelo/tipos';
 import { Icone } from '../../app/icones';
 import type { Legenda } from './cores';
 import {
-  alternarMedida, definirCorPor, definirEixo, definirFiltro, definirIcone, definirLarguraIntervalos, definirModo,
+  alternarMedida, definirCorPor, definirFormaPor, definirEixo, definirFiltro, definirIcone, definirLarguraIntervalos, definirModo,
   remexer, removerEixo, trocarEixos, TAMANHO_ICONE_MAX, TAMANHO_ICONE_MIN,
   type EstadoGrafico, type FormaIcone, type Medida, type ModoEixo, type QualEixo,
 } from './estado';
@@ -152,6 +153,23 @@ export function LegendaCores({ legenda }: { legenda: Legenda }) {
   );
 }
 
+/** Legenda dos ícones quando cada categoria tem o seu. */
+export function LegendaDeFormas({ legenda }: { legenda: LegendaFormas }) {
+  return (
+    <div className="grafico-legenda" role="group" aria-label={textos.legendaFormas(legenda.titulo)}>
+      <strong className="grafico-legenda__titulo">{textos.formaPorCurto}: {legenda.titulo}</strong>
+      <ul className="grafico-legenda__lista">
+        {legenda.itens.map((i) => (
+          <li key={i.rotulo}>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d={caminhoSvg(i.forma)} fill="currentColor" /></svg>
+            {i.rotulo}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 /** Ferramentas para a barra do topo: como arrumar cada eixo, o que mostrar e remexer. */
 export function BarraDoGrafico(p: PropsPainel) {
   const finais = p.perfil === 'finais';
@@ -191,6 +209,7 @@ export function FaixaDoGrafico(p: PropsPainel & { selecionados: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [p.estado.filtro]);
   const formas: readonly FormaIcone[] = FORMAS_ICONE;
+  const formaPorValida = p.estado.icone.formaPor && p.atributos.some((a) => a.id === p.estado.icone.formaPor && a.tipo === 'categorico') ? p.estado.icone.formaPor : '';
   const corValida = p.estado.corPor && p.atributos.some((a) => a.id === p.estado.corPor) ? p.estado.corPor : '';
   const eixoX = p.estado.x && p.atributos.some((a) => a.id === p.estado.x!.atributoId) ? p.estado.x : null;
   const eixoY = p.estado.y && p.atributos.some((a) => a.id === p.estado.y!.atributoId) ? p.estado.y : null;
@@ -239,7 +258,19 @@ export function FaixaDoGrafico(p: PropsPainel & { selecionados: string }) {
           ))}
         </div>
       )}
-      {finais && (
+      {(
+        <label className="grafico-variavel">
+          <span className="grafico-variavel__nome">{textos.formaPorCurto}</span>
+          <select className="grafico-campo" aria-label={textos.formaPor} value={formaPorValida}
+            onChange={(e) => p.aoMudar(definirFormaPor(p.estado, e.target.value || undefined), 'Mudar ícones por categoria')}>
+            <option value="">{textos.semFormaPor}</option>
+            {p.atributos.filter((a) => a.tipo === 'categorico').map((a) => (
+              <option key={a.id} value={a.id}>{a.nome}</option>
+            ))}
+          </select>
+        </label>
+      )}
+      {(
         <label className="grafico-variavel" htmlFor={idTamanho}>
           <span className="grafico-variavel__nome">{textos.tamanho}: {p.estado.icone.tamanho}</span>
           <input id={idTamanho} className="grafico-deslizante" type="range" min={TAMANHO_ICONE_MIN} max={TAMANHO_ICONE_MAX} step={1}

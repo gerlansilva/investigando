@@ -22,6 +22,8 @@ export interface EixoCfg {
 export interface IconeCfg {
   forma: FormaIcone;
   tamanho: number;
+  /** Atributo (categoria) que escolhe um ícone diferente para cada valor; vale mais que `forma`. */
+  formaPor?: string;
 }
 
 export interface EstadoGrafico {
@@ -54,6 +56,7 @@ export const esquemaEstadoGrafico = z.object({
     .object({
       forma: z.enum(FORMAS_ICONE).default('circulo'),
       tamanho: z.number().finite().min(TAMANHO_ICONE_MIN).max(TAMANHO_ICONE_MAX).default(TAMANHO_ICONE_PADRAO),
+      formaPor: z.string().min(1).optional(),
     })
     .default({ forma: 'circulo', tamanho: TAMANHO_ICONE_PADRAO }),
   mostrar: z.array(z.enum(['media', 'mediana', 'moda', 'contagem', 'porcentagem'])).default([]),
@@ -161,7 +164,12 @@ export function definirIcone(e: EstadoGrafico, parcial: Partial<IconeCfg>): Esta
   const tamanho = Number.isFinite(tamanhoBruto)
     ? Math.min(TAMANHO_ICONE_MAX, Math.max(TAMANHO_ICONE_MIN, Math.round(tamanhoBruto)))
     : e.icone.tamanho;
-  return { ...e, icone: { forma: parcial.forma ?? e.icone.forma, tamanho } };
+  return { ...e, icone: { ...e.icone, forma: parcial.forma ?? e.icone.forma, tamanho } };
+}
+
+export function definirFormaPor(e: EstadoGrafico, atributoId: string | undefined): EstadoGrafico {
+  const { formaPor: _antiga, ...resto } = e.icone;
+  return { ...e, icone: atributoId ? { ...resto, formaPor: atributoId } : resto };
 }
 
 export function definirFiltro(e: EstadoGrafico, filtro: string | undefined): EstadoGrafico {

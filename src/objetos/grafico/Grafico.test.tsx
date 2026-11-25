@@ -235,7 +235,7 @@ describe('Grafico: painel por perfil', () => {
     for (const nome of avancados) expect(p.queryByRole('button', { name: nome })).toBeNull();
     expect(p.queryByLabelText('Mostrar só os casos em que')).toBeNull();
     expect(p.queryByLabelText('Colorir por')).toBeNull();
-    expect(p.queryByLabelText('Tamanho do ícone', { exact: false })).toBeNull();
+    expect(p.getByLabelText('Tamanho do ícone', { exact: false })).toBeInTheDocument();
     // os ícones (peixe, pinguim…) aparecem em todos os perfis
     expect(p.getByRole('button', { name: 'Peixe' })).toBeInTheDocument();
     // mas ainda dá para escolher os atributos e remexer

@@ -11,6 +11,7 @@ import { Icone, type NomeIcone } from './icones';
 import { Ferramenta, GrupoNomeado, Menu, Separador } from './ui';
 import { BASES, type BaseDeDados } from '../dados/bases';
 import { colecaoDaBase } from '../dados/colecaoDaBase';
+import { MODELOS } from '../dados/modelos';
 import { colecaoDeCsv } from '../dados/csv';
 import { organizarEmFileiras, posicaoLivre, type Caixa } from './organizar';
 import { criadorDe, sugeridosDa, tiposComCriador } from './ciclo/objetosSugeridos';
@@ -149,7 +150,7 @@ export function Mesa({ perfil = 'iniciais', filtroEtapa = null }: PropsMesa) {
   }
 
   function usarBase(base: BaseDeDados) {
-    usarColecao(colecaoDaBase(base), t.mesa.bases.creditos(base.fonte, base.licenca));
+    usarColecao(colecaoDaBase(base), base.linhas.length === 0 ? t.mesa.bases.modeloDica : t.mesa.bases.creditos(base.fonte, base.licenca));
   }
 
   async function importarCsv(arquivo: File) {
@@ -294,7 +295,7 @@ export function Mesa({ perfil = 'iniciais', filtroEtapa = null }: PropsMesa) {
           rotulo={t.mesa.bases.titulo}
           alinhar="inicio"
           itens={[
-            ...BASES.map((b) => ({ rotulo: b.nome, aoEscolher: () => usarBase(b) })),
+            ...[...MODELOS, ...BASES].map((b) => ({ rotulo: b.linhas.length === 0 ? `${b.nome} (tabela vazia)` : b.nome, aoEscolher: () => usarBase(b) })),
             { rotulo: t.mesa.bases.importar, aoEscolher: () => entradaCsv.current?.click() },
           ]}
         />

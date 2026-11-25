@@ -5,6 +5,7 @@ import { definirIntervalos } from '../../grafico/algoritmos/intervalos';
 import { DURACAO_PADRAO_MS, deveAnimar, origemParaNovaLista, passoAnimacao, progresso } from './animacao';
 import { construirCena, type Primitiva } from './cena';
 import { calcularCores } from './cores';
+import { calcularFormas } from './formasPorCategoria';
 import { desenharPontos } from './desenho';
 import { exportarPng } from './exportar';
 import { obterArquivos } from '../../app/arquivos';
@@ -13,7 +14,7 @@ import type { EstadoGrafico } from './estado';
 import { lerEstado } from './estado';
 import { acharEmRetangulo, acharPonto, construirGrade } from './grade';
 import { areaInterna, calcularMargem, calcularNuvem, prepararLayout } from './layout';
-import { BarraDoGrafico, FaixaDoGrafico, LegendaCores } from './PainelControle';
+import { BarraDoGrafico, FaixaDoGrafico, LegendaCores, LegendaDeFormas } from './PainelControle';
 import { Ferramentas, useObjetoNaMesa } from '../../app/contextoBarra';
 import { textos } from './textos';
 import './Grafico.css';
@@ -103,6 +104,10 @@ export function Grafico(props: PropsObjeto<unknown>) {
   );
   const cena = useMemo(() => construirCena(layout, estado, margem), [layout, estado, margem]);
   const { cores, legenda } = useMemo(() => calcularCores(colecao, layout.casos, estado.corPor), [colecao, layout.casos, estado.corPor]);
+  const { formas: formasDosCasos, legenda: legendaFormas } = useMemo(
+    () => calcularFormas(colecao, layout.casos, estado.icone.formaPor),
+    [colecao, layout.casos, estado.icone.formaPor],
+  );
   const indicesSelecionados = useMemo(() => {
     const s = new Set<number>();
     layout.ids.forEach((id, i) => selecao.has(id) && s.add(i));
@@ -118,9 +123,9 @@ export function Grafico(props: PropsObjeto<unknown>) {
   // ---- canvas e animação ----
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const anim = useRef<AnimacaoPontos | null>(null);
-  const ultimo = useRef({ cores, diametro: layout.diametro, forma: estado.icone.forma, indicesSelecionados, largura: area.largura, altura: area.altura });
+  const ultimo = useRef({ cores, formas: formasDosCasos, diametro: layout.diametro, forma: estado.icone.forma, indicesSelecionados, largura: area.largura, altura: area.altura });
   useLayoutEffect(() => {
-    ultimo.current = { cores, diametro: layout.diametro, forma: estado.icone.forma, indicesSelecionados, largura: area.largura, altura: area.altura };
+    ultimo.current = { cores, formas: formasDosCasos, diametro: layout.diametro, forma: estado.icone.forma, indicesSelecionados, largura: area.largura, altura: area.altura };
   });
 
   const desenhar = useCallback(() => {
@@ -134,7 +139,7 @@ export function Grafico(props: PropsObjeto<unknown>) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, u.largura, u.altura);
     if (!a) return;
-    desenharPontos(ctx, { posicoes: a.atual, n: a.ids.length, cores: u.cores, diametro: u.diametro, forma: u.forma, selecionados: u.indicesSelecionados });
+    desenharPontos(ctx, { posicoes: a.atual, n: a.ids.length, cores: u.cores, ...(u.formas ? { formas: u.formas } : {}), diametro: u.diametro, forma: u.forma, selecionados: u.indicesSelecionados });
   }, []);
 
   // Tamanho do bitmap: dimensões CSS × devicePixelRatio (nitidez em telas retina).
@@ -198,7 +203,7 @@ export function Grafico(props: PropsObjeto<unknown>) {
   // Seleção, cores e ícone mudam sem mover os pontos: só redesenha.
   useEffect(() => {
     desenhar();
-  }, [indicesSelecionados, cores, layout.diametro, estado.icone.forma, desenhar]);
+  }, [indicesSelecionados, cores, formasDosCasos, layout.diametro, estado.icone.forma, desenhar]);
 
   // ---- interação ----
   const interacaoRef = useRef<HTMLDivElement>(null);
@@ -326,6 +331,7 @@ export function Grafico(props: PropsObjeto<unknown>) {
         {!naMesa && <FaixaDoGrafico {...propsControles} selecionados={selecionados} />}
       </Ferramentas>
       {legenda && <LegendaCores legenda={legenda} />}
+      {legendaFormas && <LegendaDeFormas legenda={legendaFormas} />}
       <div className="grafico__regiao" ref={regiaoRef}>
         <div className="grafico__quadro" style={{ width: tam.l, height: tam.a }}>
           <canvas ref={canvasRef} className="grafico__canvas" aria-hidden="true"

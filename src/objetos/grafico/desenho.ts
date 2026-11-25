@@ -12,6 +12,8 @@ export interface OpcoesPontos {
   cores: readonly string[];
   diametro: number;
   forma: FormaIcone;
+  /** Forma de cada ponto (se omitida, todos usam `forma`). */
+  formas?: readonly FormaIcone[];
   /** Índices (na ordem dos pontos) dos casos selecionados. */
   selecionados?: ReadonlySet<number>;
 }
@@ -30,16 +32,18 @@ export function desenharPontos(ctx: CanvasRenderingContext2D, o: OpcoesPontos): 
   for (let i = 0; i < o.n; i++) {
     if (temSelecao && sel!.has(i)) continue;
     const cor = o.cores[i] ?? '#2a6fdb';
-    const g = grupos.get(cor);
+    const chave = o.formas ? `${cor}|${o.formas[i] ?? o.forma}` : cor;
+    const g = grupos.get(chave);
     if (g) g.push(i);
-    else grupos.set(cor, [i]);
+    else grupos.set(chave, [i]);
   }
   const contorno = o.n <= 3000;
   ctx.save();
   ctx.globalAlpha = temSelecao ? 0.4 : 0.88;
-  for (const [cor, idx] of grupos) {
+  for (const [chave, idx] of grupos) {
+    const cor = o.formas ? chave.slice(0, chave.lastIndexOf('|')) : chave;
     ctx.beginPath();
-    for (const i of idx) caminho(ctx, o.forma, o.posicoes[2 * i]!, o.posicoes[2 * i + 1]!, r);
+    for (const i of idx) caminho(ctx, o.formas?.[i] ?? o.forma, o.posicoes[2 * i]!, o.posicoes[2 * i + 1]!, r);
     ctx.fillStyle = cor;
     ctx.fill();
     if (contorno) {
@@ -56,14 +60,14 @@ export function desenharPontos(ctx: CanvasRenderingContext2D, o: OpcoesPontos): 
       const x = o.posicoes[2 * i]!;
       const y = o.posicoes[2 * i + 1]!;
       ctx.beginPath();
-      caminho(ctx, o.forma, x, y, r);
+      caminho(ctx, o.formas?.[i] ?? o.forma, x, y, r);
       ctx.fillStyle = o.cores[i] ?? '#2a6fdb';
       ctx.fill();
       ctx.lineWidth = 1.5;
       ctx.strokeStyle = '#ffffff';
       ctx.stroke();
       ctx.beginPath();
-      caminho(ctx, o.forma, x, y, r + 3);
+      caminho(ctx, o.formas?.[i] ?? o.forma, x, y, r + 3);
       ctx.lineWidth = 2.5;
       ctx.strokeStyle = COR_ANEL;
       ctx.stroke();

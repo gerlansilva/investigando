@@ -1,6 +1,8 @@
 // Exportar o gráfico como PNG: redesenha pontos (canvas) e eixos/rótulos (cena vetorial) num canvas fora da tela.
 import type { Colecao } from '../../modelo/tipos';
 import { calcularCores } from './cores';
+import { calcularFormas } from './formasPorCategoria';
+import type { FormaIcone } from './formas';
 import { construirCena, LARGURA_LEGENDA, primitivasDaLegenda, type Primitiva } from './cena';
 import { desenharPontos, desenharPrimitivas } from './desenho';
 import type { EstadoGrafico } from './estado';
@@ -45,6 +47,7 @@ export interface CenaExportada {
   vetores: Primitiva[];
   posicoes: Float32Array;
   cores: string[];
+  formas: FormaIcone[] | null;
   diametro: number;
   indicesSelecionados: Set<number>;
 }
@@ -55,6 +58,7 @@ export function prepararExportacao(estado: EstadoGrafico, colecao: Colecao | und
   const area = areaInterna(o.largura, o.altura, margem);
   const layout = prepararLayout({ estado, colecao, largura: area.largura, altura: area.altura, globais: o.globais });
   const { cores, legenda } = calcularCores(colecao, layout.casos, estado.corPor);
+  const { formas } = calcularFormas(colecao, layout.casos, estado.icone.formaPor);
   const vetores = construirCena(layout, estado, margem);
   const larguraTotal = o.largura + (legenda ? LARGURA_LEGENDA : 0);
   if (legenda) vetores.push(...primitivasDaLegenda(legenda, o.largura + 8, margem.sup));
@@ -67,6 +71,7 @@ export function prepararExportacao(estado: EstadoGrafico, colecao: Colecao | und
     vetores,
     posicoes: layout.alvo,
     cores,
+    formas,
     diametro: layout.diametro,
     indicesSelecionados,
   };
@@ -87,6 +92,7 @@ export async function exportarPng(estado: EstadoGrafico, colecao: Colecao | unde
     posicoes: cena.posicoes,
     n: cena.cores.length,
     cores: cena.cores,
+    ...(cena.formas ? { formas: cena.formas } : {}),
     diametro: cena.diametro,
     forma: estado.icone.forma,
     selecionados: cena.indicesSelecionados,
