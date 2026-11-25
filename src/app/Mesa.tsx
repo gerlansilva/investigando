@@ -105,7 +105,8 @@ export function Mesa({ perfil = 'iniciais', filtroEtapa = null }: PropsMesa) {
 
   const etapaNova: EtapaCiclo = projeto.cicloAtual;
   const visiveis = filtroEtapa ? projeto.objetos.filter((o) => o.etapa === filtroEtapa) : projeto.objetos;
-  const ocultos = limitesDoProfessor(projeto).tiposOcultos;
+  const limites = limitesDoProfessor(projeto);
+  const ocultos = limites.tiposOcultos;
   const tiposNovos: TipoObjeto[] = [...NOVOS, ...tiposComCriador().filter((x) => !NOVOS.includes(x))].filter((x) => !ocultos.includes(x));
 
   // Ao chegar numa etapa (ou quando os quadros dela mudam), o primeiro quadro fica focado para mostrar as ferramentas dele.
@@ -377,6 +378,7 @@ export function Mesa({ perfil = 'iniciais', filtroEtapa = null }: PropsMesa) {
               selecao={(colecao && selecaoCasos[colecao.id]) || VAZIO}
               aoSelecionar={aoSelecionarDe(colecao?.id)}
               perfil={perfil}
+              ferramentas={limites.ferramentas}
               z={ordem.indexOf(objeto.id) + 1}
               focado={focadoId === objeto.id}
               encaixe={encaixeContextual}
@@ -404,6 +406,7 @@ interface PropsObjetoNaMesa {
   selecao: ReadonlySet<Id>;
   aoSelecionar(ids: Id[], modo: ModoSelecaoObjeto): void;
   perfil: PerfilEnsino;
+  ferramentas: Readonly<Record<string, boolean>>;
   z: number;
   focado: boolean;
   encaixe: HTMLElement | null;
@@ -502,6 +505,7 @@ function ObjetoNaMesa(p: PropsObjetoNaMesa) {
       executar={executar}
       selarHistorico={selarHistorico}
       perfil={p.perfil}
+      ferramentas={p.ferramentas}
     />
   ) : (
     <div className="em-breve" role="status">

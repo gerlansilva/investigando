@@ -1,6 +1,7 @@
+import { FERRAMENTAS_GRAFICO, ferramentaLigada } from '../../estado/ferramentas';
 import { useId, useState, type FormEvent } from 'react';
 import {
-  ativarModoProfessor, definirEtapaTravada, definirPin, definirTipoOculto, desativarModoProfessor, ErroComando, fixarPerfil, temPin,
+  ativarModoProfessor, definirEtapaTravada, definirFerramenta, limparFerramentas, definirPin, definirTipoOculto, desativarModoProfessor, ErroComando, fixarPerfil, temPin,
   verificarPin, type Comando,
 } from '../../estado/comandos';
 import { paraCSV, paraJSON } from '../../estado/registro';
@@ -81,7 +82,7 @@ function RegistroTela({ controle }: { controle: ControleRegistro }) {
 }
 
 /** Botão discreto "Professor" na barra e o cartão com o modo professor e o registro de pesquisa. */
-export function Professor({ registro }: { registro: ControleRegistro }) {
+export function Professor({ registro, perfil = 'iniciais' }: { registro: ControleRegistro; perfil?: 'iniciais' | 'finais' }) {
   const armazem = useArmazem();
   const projeto = useProjeto();
   const idPin = useId();
@@ -191,6 +192,17 @@ export function Professor({ registro }: { registro: ControleRegistro }) {
                         <span>{t.mesa.nomeObjeto[tipo]}</span>
                       </label>
                     ))}
+                  </fieldset>
+                  <fieldset className="professor-grupo">
+                    <legend>{t.professor.ferramentas}</legend>
+                    <p className="professor-dica">{t.professor.ferramentasDica}</p>
+                    {FERRAMENTAS_GRAFICO.map((id) => (
+                      <label key={id} className="professor-opcao">
+                        <input type="checkbox" checked={ferramentaLigada(pr!.perfilFixo ?? perfil, pr!.ferramentas, id)} onChange={(e) => aplicar(() => definirFerramenta(id, e.target.checked))} />
+                        <span>{t.professor.nomeFerramenta[id]}</span>
+                      </label>
+                    ))}
+                    <button type="button" className="botao-pequeno" disabled={!pr!.ferramentas} onClick={() => aplicar(() => limparFerramentas())}>{t.professor.ferramentasPadrao}</button>
                   </fieldset>
                   <label className="professor-opcao">
                     <span>{t.professor.perfilFixo}</span>

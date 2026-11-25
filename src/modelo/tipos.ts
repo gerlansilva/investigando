@@ -68,6 +68,8 @@ export interface ModoProfessor {
   etapasTravadas: EtapaCiclo[];
   tiposOcultos: TipoObjeto[];
   perfilFixo?: PerfilFixo;
+  /** Ajustes por ferramenta (ligada/desligada) que valem mais que o perfil. */
+  ferramentas?: Record<string, boolean>;
   pin?: { sal: string; hash: string };
 }
 

@@ -1,3 +1,4 @@
+import { ferramentaLigada, type FerramentaGrafico } from '../../estado/ferramentas';
 import { FORMAS_ICONE, caminhoSvg } from './formas';
 import type { LegendaFormas } from './formasPorCategoria';
 import { useEffect, useId, useState } from 'react';
@@ -18,6 +19,8 @@ export interface PropsPainel {
   estado: EstadoGrafico;
   atributos: readonly Atributo[];
   perfil: 'iniciais' | 'finais';
+  /** Ajustes do professor por ferramenta (vencem o perfil). */
+  ferramentas?: Readonly<Record<string, boolean>>;
   erroFiltro: string | null;
   filtrando: boolean;
   visiveis: number;
@@ -32,8 +35,9 @@ export interface PropsPainel {
   mensagem?: string | null;
 }
 
-const MODOS_INICIAIS: ModoEixo[] = ['separar', 'empilhar'];
-const MODOS_FINAIS: ModoEixo[] = ['separar', 'ordenar', 'empilhar', 'intervalos'];
+function ligada(p: PropsPainel, id: FerramentaGrafico): boolean {
+  return ferramentaLigada(p.perfil, p.ferramentas, id);
+}
 
 function passoDaLargura(v: number): number {
   return v >= 10 ? 1 : v >= 1 ? 0.5 : 0.1;
@@ -102,7 +106,7 @@ function VariavelDoEixo({ qual, p }: { qual: QualEixo; p: PropsPainel }) {
 function ModosDoEixo({ qual, p }: { qual: QualEixo; p: PropsPainel }) {
   const eixo = qual === 'x' ? p.estado.x : p.estado.y;
   const nome = qual === 'x' ? textos.eixoHorizontal : textos.eixoVertical;
-  const modos = p.perfil === 'finais' ? MODOS_FINAIS : MODOS_INICIAIS;
+  const modos: ModoEixo[] = ['separar', ...(ligada(p, 'ordenar') ? (['ordenar'] as const) : []), 'empilhar', ...(ligada(p, 'intervalos') ? (['intervalos'] as const) : [])];
   const existe = eixo && p.atributos.some((a) => a.id === eixo.atributoId);
   return (
     <GrupoNomeado nome={qual === 'x' ? textos.horizontal : textos.vertical}>
@@ -172,37 +176,35 @@ export function LegendaDeFormas({ legenda }: { legenda: LegendaFormas }) {
 
 /** Ferramentas para a barra do topo: como arrumar cada eixo, o que mostrar e remexer. */
 export function BarraDoGrafico(p: PropsPainel) {
-  const finais = p.perfil === 'finais';
   return (
     <>
       <ModosDoEixo qual="x" p={p} />
       <ModosDoEixo qual="y" p={p} />
-      {finais && (
+      {ligada(p, 'trocarEixos') && (
         <Ferramenta icone="trocarEixos" rotulo={textos.trocarEixos} disabled={!p.estado.x && !p.estado.y}
           onClick={() => p.aoMudar(trocarEixos(p.estado), textos.trocarEixos)} />
       )}
       <GrupoNomeado nome={textos.medidasCurto}>
         <div className="barra-grupo" role="group" aria-label={textos.medidas}>
           <BotaoMedida p={p} medida="contagem" />
-          {finais && <BotaoMedida p={p} medida="porcentagem" />}
-          {finais && <BotaoMedida p={p} medida="media" />}
-          {finais && <BotaoMedida p={p} medida="mediana" />}
-          {finais && <BotaoMedida p={p} medida="moda" />}
+          {ligada(p, 'porcentagem') && <BotaoMedida p={p} medida="porcentagem" />}
+          {ligada(p, 'media') && <BotaoMedida p={p} medida="media" />}
+          {ligada(p, 'mediana') && <BotaoMedida p={p} medida="mediana" />}
+          {ligada(p, 'moda') && <BotaoMedida p={p} medida="moda" />}
         </div>
       </GrupoNomeado>
       <Ferramenta icone="remexer" rotulo={textos.remexer} title={textos.remexerAjuda}
         onClick={() => p.aoMudar(remexer(p.estado), 'Remexer pontos')} />
-      {finais && <Ferramenta icone="salvarImagem" rotulo={textos.salvarImagem} onClick={p.aoExportar} />}
-      {finais && <Ferramenta icone="exportarPdf" rotulo={t.exportar.pdf} title={t.exportar.pdfDica} onClick={p.aoExportarPdf} />}
+      {ligada(p, 'salvarImagem') && <Ferramenta icone="salvarImagem" rotulo={textos.salvarImagem} onClick={p.aoExportar} />}
+      {ligada(p, 'exportarPdf') && <Ferramenta icone="exportarPdf" rotulo={t.exportar.pdf} title={t.exportar.pdfDica} onClick={p.aoExportarPdf} />}
     </>
   );
 }
 
-/** Faixa fina embaixo do quadro: variáveis dos eixos e, nos anos finais, filtro, cor e ícone. */
+/** Faixa fina embaixo do quadro: variáveis dos eixos e, filtro, cor e ícone (conforme o perfil e o professor). */
 export function FaixaDoGrafico(p: PropsPainel & { selecionados: string }) {
   const idFiltro = useId();
   const idTamanho = useId();
-  const finais = p.perfil === 'finais';
   const [textoFiltro, setTextoFiltro] = useState(p.estado.filtro ?? '');
   useEffect(() => {
     if ((p.estado.filtro ?? '') !== textoFiltro && (p.estado.filtro ?? '').trim() !== textoFiltro.trim()) setTextoFiltro(p.estado.filtro ?? '');
@@ -218,15 +220,15 @@ export function FaixaDoGrafico(p: PropsPainel & { selecionados: string }) {
     <div className="grafico-faixa-itens">
       <VariavelDoEixo qual="x" p={p} />
       <VariavelDoEixo qual="y" p={p} />
-      {finais && eixoX?.modo === 'intervalos' && (
+      {ligada(p, 'intervalos') && eixoX?.modo === 'intervalos' && (
         <CampoLargura valor={p.larguraEfetiva.x ?? 1} automatica={eixoX.intervalos?.largura === undefined}
           aoMudar={(v) => p.aoMudar(definirLarguraIntervalos(p.estado, 'x', v), 'Largura do intervalo (eixo horizontal)')} />
       )}
-      {finais && eixoY?.modo === 'intervalos' && (
+      {ligada(p, 'intervalos') && eixoY?.modo === 'intervalos' && (
         <CampoLargura valor={p.larguraEfetiva.y ?? 1} automatica={eixoY.intervalos?.largura === undefined}
           aoMudar={(v) => p.aoMudar(definirLarguraIntervalos(p.estado, 'y', v), 'Largura do intervalo (eixo vertical)')} />
       )}
-      {finais && (
+      {ligada(p, 'corPor') && (
         <label className="grafico-variavel">
           <span className="grafico-variavel__nome">{textos.corPorCurto}</span>
           <select className="grafico-campo" aria-label={textos.corPor} value={corValida}
@@ -238,7 +240,7 @@ export function FaixaDoGrafico(p: PropsPainel & { selecionados: string }) {
           </select>
         </label>
       )}
-      {finais && (
+      {ligada(p, 'filtro') && (
         <label className="grafico-variavel grafico-variavel--filtro">
           <span className="grafico-variavel__nome">{textos.filtroCurto}</span>
           <input id={idFiltro} className="grafico-campo" type="text" value={textoFiltro} placeholder={textos.filtroExemplo}

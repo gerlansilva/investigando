@@ -397,3 +397,15 @@ describe('Grafico: animação com requestAnimationFrame', () => {
 });
 
 void ID_COL;
+
+describe('Grafico: ferramentas ajustadas pelo professor', () => {
+  it('no Básico, o professor liga a Média; no Completo, desliga a Moda', () => {
+    const basico = render(<Grafico {...criarProps(estadoCom({ x: { atributoId: A_MEIO, modo: 'separar' } }), { perfil: 'iniciais', ferramentas: { media: true } })} />);
+    expect(basico.getByRole('button', { name: 'Média' })).toBeInTheDocument();
+    expect(basico.queryByRole('button', { name: 'Mediana' })).toBeNull();
+    basico.unmount();
+    render(<Grafico {...criarProps(estadoCom({ x: { atributoId: A_MEIO, modo: 'separar' } }), { perfil: 'finais', ferramentas: { moda: false } })} />);
+    expect(screen.queryByRole('button', { name: 'Moda' })).toBeNull();
+    expect(screen.getByRole('button', { name: 'Mediana' })).toBeInTheDocument();
+  });
+});

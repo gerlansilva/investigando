@@ -21,7 +21,7 @@ interface PropsObjeto<E = unknown> {
   aoSelecionar(ids: Id[], modo: 'substituir'|'alternar'|'limpar'): void;
   executar(comando: Comando): void;  // histórico; ver src/estado/comandos
   selarHistorico(): void;            // chamar ao soltar mouse/terminar edição contínua
-  perfil: 'iniciais' | 'finais';     // anos iniciais escondem ferramentas avançadas
+  perfil: 'iniciais' | 'finais';     // 'iniciais' = Básico, 'finais' = Completo; o professor pode ajustar cada ferramenta (ferramentas?)
 }
 ```
 O Agente Mesa define e exporta esse tipo em `src/app/tiposObjeto.ts` (já criado por mim abaixo? NÃO: crie-o você primeiro, em minutos, para o Agente Gráfico Visual importar; o Agente Gráfico Visual deve esperar que o arquivo exista ou usar a definição acima e reconciliar depois).

@@ -1,4 +1,5 @@
 import { ETAPAS, TIPOS_OBJETO, type EtapaCiclo, type ModoProfessor, type PerfilFixo, type Projeto, type TipoObjeto } from '../../modelo/tipos';
+import { FERRAMENTAS_GRAFICO } from '../ferramentas';
 import { criarComando, ErroComando, type Comando } from './base';
 
 /** Limites que a interface do aluno deve respeitar (vazios quando o modo professor está desligado). */
@@ -7,14 +8,15 @@ export interface LimitesProfessor {
   etapasTravadas: readonly EtapaCiclo[];
   tiposOcultos: readonly TipoObjeto[];
   perfilFixo: PerfilFixo | null;
+  ferramentas: Readonly<Record<string, boolean>>;
 }
 
-const SEM_LIMITES: LimitesProfessor = { ativo: false, etapasTravadas: [], tiposOcultos: [], perfilFixo: null };
+const SEM_LIMITES: LimitesProfessor = { ativo: false, etapasTravadas: [], tiposOcultos: [], perfilFixo: null, ferramentas: {} };
 
 export function limitesDoProfessor(p: Pick<Projeto, 'professor'>): LimitesProfessor {
   const pr = p.professor;
   if (!pr?.ativo) return SEM_LIMITES;
-  return { ativo: true, etapasTravadas: pr.etapasTravadas, tiposOcultos: pr.tiposOcultos, perfilFixo: pr.perfilFixo ?? null };
+  return { ativo: true, etapasTravadas: pr.etapasTravadas, tiposOcultos: pr.tiposOcultos, perfilFixo: pr.perfilFixo ?? null, ferramentas: pr.ferramentas ?? {} };
 }
 
 /** Hash simples (cyrb53 duas vezes, com sal), só para não guardar o PIN em claro. É uma trava de sala de aula, não segurança forte. */
@@ -112,6 +114,33 @@ export function definirTipoOculto(tipo: TipoObjeto, oculto: boolean): Comando {
       const pr = exigirAtivo(p);
       const sem = pr.tiposOcultos.filter((x) => x !== tipo);
       pr.tiposOcultos = oculto ? TIPOS_OBJETO.filter((x) => x === tipo || sem.includes(x)) : sem;
+    },
+  });
+}
+
+/** Liga ou desliga uma ferramenta para o aluno; `null` volta ao padrão do perfil. */
+export function definirFerramenta(id: string, ligada: boolean | null): Comando {
+  if (!FERRAMENTAS_GRAFICO.includes(id as never)) throw new ErroComando('Ferramenta desconhecida.');
+  return criarComando({
+    rotulo: 'Ajustar uma ferramenta',
+    receita: (p) => {
+      const pr = exigirAtivo(p);
+      const atual = { ...(pr.ferramentas ?? {}) };
+      if (ligada === null) delete atual[id];
+      else atual[id] = ligada;
+      if (Object.keys(atual).length === 0) delete pr.ferramentas;
+      else pr.ferramentas = atual;
+    },
+  });
+}
+
+/** Volta todas as ferramentas ao padrão do perfil. */
+export function limparFerramentas(): Comando {
+  return criarComando({
+    rotulo: 'Voltar as ferramentas ao padrão',
+    receita: (p) => {
+      const pr = exigirAtivo(p);
+      delete pr.ferramentas;
     },
   });
 }

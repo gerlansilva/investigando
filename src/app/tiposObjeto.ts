@@ -19,4 +19,6 @@ export interface PropsObjeto<E = unknown> {
   selarHistorico(): void;
   /** Anos iniciais escondem ferramentas avançadas. */
   perfil: PerfilEnsino;
+  /** Ajustes do professor por ferramenta (vencem o perfil). */
+  ferramentas?: Readonly<Record<string, boolean>>;
 }

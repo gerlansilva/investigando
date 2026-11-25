@@ -8,7 +8,7 @@ Tudo fica no seu computador. Os arquivos têm a extensão `.investigando`.
 
 ## 1. Visão geral da tela
 
-Em cima ficam **Abrir**, **Salvar**, **Imprimir**, **Desfazer/Refazer**, **Bases de dados**, **Organizar**, o **Perfil** (Anos iniciais / Anos finais) e o **Professor**. À esquerda, a coluna **Novo** cria objetos. No centro, as cinco etapas do ciclo e a pergunta da turma. O título da janela mostra o nome do projeto.
+Em cima ficam **Abrir**, **Salvar**, **Imprimir**, **Desfazer/Refazer**, **Bases de dados**, **Organizar**, o **Perfil** (Básico / Completo) e o **Professor**. À esquerda, a coluna **Novo** cria objetos. No centro, as cinco etapas do ciclo e a pergunta da turma. O título da janela mostra o nome do projeto.
 
 ![Etapa Problema](imagens/01-problema.png)
 
@@ -63,18 +63,22 @@ Configure os setores (nome e peso) e sorteie.
 
 ![Simulador](imagens/06-simulador.png)
 
-## 4. Modo professor
+## 4. Perfil Básico e Completo
 
-Em **Professor** é possível limitar o que o aluno altera, com **PIN opcional**, e ligar o **registro de pesquisa**. O registro vem desligado, guarda só o tipo de evento e a hora (sem nomes nem textos), fica neste computador e pode ser exportado em JSON ou CSV.
+O **Básico** mostra as ferramentas essenciais (separar, empilhar, contar, remexer, ícones), indicado para os anos iniciais. O **Completo** liga todas (ordenar, intervalos, porcentagem, média, mediana, moda, trocar eixos, colorir por, filtro, salvar imagem e PDF), indicado para os anos finais. O perfil é só um ponto de partida: no modo professor, cada ferramenta pode ser ligada ou desligada.
+
+## 5. Modo professor
+
+Em **Professor** é possível travar etapas, ocultar objetos novos, fixar o perfil, **ligar ou desligar cada ferramenta do gráfico**, proteger com **PIN opcional** e ligar o **registro de pesquisa**. O registro vem desligado, guarda só o tipo de evento e a hora (sem nomes nem textos), fica neste computador e pode ser exportado em JSON ou CSV.
 
 ![Modo professor](imagens/08-professor.png)
 
-## 5. Salvar, abrir e imprimir
+## 6. Salvar, abrir e imprimir
 
 - **Salvar** grava um arquivo `.investigando`; **Abrir** carrega um.
 - **Imprimir** gera uma página limpa (use "Salvar como PDF" no diálogo).
 - Desfazer/Refazer valem para todas as ações da mesa.
 
-## 6. Acessibilidade
+## 7. Acessibilidade
 
 Fontes legíveis, alto contraste, navegação por teclado e rótulos para leitores de tela. Se encontrar algo que atrapalhe, abra uma *issue* no repositório.

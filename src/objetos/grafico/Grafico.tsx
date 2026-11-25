@@ -69,7 +69,7 @@ function ElementoVetorial({ p }: { p: Primitiva }) {
 }
 
 export function Grafico(props: PropsObjeto<unknown>) {
-  const { objeto, colecao, selecao, aoSelecionar, executar, selarHistorico, perfil } = props;
+  const { objeto, colecao, selecao, aoSelecionar, executar, selarHistorico, perfil, ferramentas } = props;
   const naMesa = useObjetoNaMesa() !== null;
   const estado = useMemo(() => lerEstado(objeto.estado, colecao?.id ?? ''), [objeto.estado, colecao?.id]);
 
@@ -310,6 +310,7 @@ export function Grafico(props: PropsObjeto<unknown>) {
     estado,
     atributos: colecao.atributos,
     perfil,
+    ferramentas,
     erroFiltro: layout.erroFiltro,
     filtrando: layout.filtrando,
     visiveis: layout.ids.length,

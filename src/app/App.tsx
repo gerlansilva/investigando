@@ -158,12 +158,12 @@ function Conteudo({ armazem }: { armazem: Armazem }) {
           <div className="barra-grupo barra-visao" ref={setEncaixeVisao} />
           <label className="campo-perfil">
             <span>{t.app.perfil}</span>
-            <select value={perfil} disabled={perfilFixo !== null} title={perfilFixo ? t.professor.perfilTravado : undefined} onChange={(e) => setPerfil(e.target.value as PerfilEnsino)}>
+            <select value={perfil} disabled={perfilFixo !== null} title={perfilFixo ? t.professor.perfilTravado : t.app.perfilDica} onChange={(e) => setPerfil(e.target.value as PerfilEnsino)}>
               <option value="iniciais">{t.app.perfilIniciais}</option>
               <option value="finais">{t.app.perfilFinais}</option>
             </select>
           </label>
-          <Professor registro={registro} />
+          <Professor registro={registro} perfil={perfil} />
           <input
             ref={entradaRef}
             type="file"

@@ -3,7 +3,7 @@ import fc from 'fast-check';
 import { criarProjeto, salvarProjeto, abrirProjeto } from '../../modelo';
 import { ETAPAS, type EtapaCiclo, type Projeto } from '../../modelo/tipos';
 import {
-  ativarModoProfessor, definirEtapaTravada, definirPin, definirTipoOculto, desativarModoProfessor, ErroComando, fixarPerfil, hashPin,
+  ativarModoProfessor, definirEtapaTravada, definirPin, definirTipoOculto, desativarModoProfessor, ErroComando, fixarPerfil, hashPin, definirFerramenta, limparFerramentas,
   limitesDoProfessor, pinValido, temPin, verificarPin, type Comando,
 } from './index';
 
@@ -31,7 +31,7 @@ describe('modo professor', () => {
 
   it('ativa, trava etapas, oculta objetos e fixa o perfil', () => {
     const p = aplicar(ativo(), definirEtapaTravada('analise', true), definirTipoOculto('simulador', true), fixarPerfil('finais'));
-    expect(limitesDoProfessor(p)).toEqual({ ativo: true, etapasTravadas: ['analise'], tiposOcultos: ['simulador'], perfilFixo: 'finais' });
+    expect(limitesDoProfessor(p)).toEqual({ ativo: true, etapasTravadas: ['analise'], tiposOcultos: ['simulador'], perfilFixo: 'finais', ferramentas: {} });
     expect(limitesDoProfessor(aplicar(p, fixarPerfil(null))).perfilFixo).toBeNull();
   });
 
@@ -101,5 +101,24 @@ describe('modo professor', () => {
         if (a !== b) expect(hashPin(a, sal)).not.toBe(hashPin(b, sal));
       }),
     );
+  });
+});
+
+describe('ferramentas do professor', () => {
+  it('liga e desliga uma ferramenta, volta ao padrão e desfaz', () => {
+    const p = ativo();
+    const ligado = aplicar(p, definirFerramenta('media', true), definirFerramenta('filtro', false));
+    expect(limitesDoProfessor(ligado).ferramentas).toEqual({ media: true, filtro: false });
+    expect(limitesDoProfessor(aplicar(ligado, definirFerramenta('media', null))).ferramentas).toEqual({ filtro: false });
+    expect(limitesDoProfessor(aplicar(ligado, limparFerramentas())).ferramentas).toEqual({});
+    ida(p, definirFerramenta('moda', true));
+  });
+  it('recusa ferramenta desconhecida e exige o modo ativo', () => {
+    expect(() => definirFerramenta('xyz', true)).toThrow(ErroComando);
+    expect(() => aplicar(criarProjeto(), definirFerramenta('media', true))).toThrow(ErroComando);
+  });
+  it('os ajustes sobrevivem a salvar e abrir o arquivo', () => {
+    const p = aplicar(ativo(), definirFerramenta('mediana', true));
+    expect(abrirProjeto(salvarProjeto(p)).professor?.ferramentas).toEqual({ mediana: true });
   });
 });

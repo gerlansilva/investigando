@@ -62,6 +62,7 @@ const professor = z.object({
   etapasTravadas: z.array(etapa),
   tiposOcultos: z.array(z.enum(TIPOS_OBJETO as [string, ...string[]])),
   perfilFixo: z.enum(['iniciais', 'finais']).optional(),
+  ferramentas: z.record(z.string(), z.boolean()).optional(),
   pin: z.object({ sal: z.string().min(1), hash: z.string().min(1) }).optional(),
 });
 
