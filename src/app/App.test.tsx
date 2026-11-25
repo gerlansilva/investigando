@@ -100,6 +100,17 @@ describe('App', () => {
     expect(abrirProjeto(conteudo).colecoes[0]!.id).toBe(ID_COLECAO_EXEMPLO);
   });
 
+  it('Bases de dados: o app abre vazio e a base entra com tabela e créditos', async () => {
+    render(<App />);
+    expect(screen.queryByText(/Como viemos/)).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /^Dados/ }));
+    await userEvent.click(screen.getByRole('button', { name: 'Bases de dados' }));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Pinguins de Palmer' }));
+    expect(screen.getByRole('region', { name: /^Tabela: Pinguins de Palmer/ })).toBeInTheDocument();
+    expect(screen.getByText('344 casos')).toBeInTheDocument();
+    expect(screen.getByDisplayValue(/Licença: CC0/)).toBeInTheDocument();
+  });
+
   it('nomeDeArquivo tira acentos e símbolos', () => {
     expect(nomeDeArquivo('Como viemos para a escola?')).toBe('como-viemos-para-a-escola.investigando');
     expect(nomeDeArquivo('???')).toBe('projeto.investigando');

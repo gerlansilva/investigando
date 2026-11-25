@@ -9,6 +9,9 @@ import { criarObjetoComColecao, moverObjetos } from './comandosMesa';
 import { ContextoBarra, ContextoObjeto, Encaixar } from './contextoBarra';
 import { Icone, type NomeIcone } from './icones';
 import { Ferramenta, GrupoNomeado, Menu, Separador } from './ui';
+import { BASES, type BaseDeDados } from '../dados/bases';
+import { colecaoDaBase } from '../dados/colecaoDaBase';
+import { colecaoDeCsv } from '../dados/csv';
 import { organizarEmFileiras, posicaoLivre, type Caixa } from './organizar';
 import { criadorDe, sugeridosDa, tiposComCriador } from './ciclo/objetosSugeridos';
 import { obterTipoObjeto } from './registro';
@@ -71,6 +74,7 @@ export function Mesa({ perfil = 'iniciais', filtroEtapa = null }: PropsMesa) {
   const [encaixeLocal, setEncaixeLocal] = useState<HTMLElement | null>(null);
   const encaixeContextual = encaixes?.contextual ?? encaixeLocal;
   const mesaRef = useRef<HTMLDivElement>(null);
+  const entradaCsv = useRef<HTMLInputElement>(null);
   const focadoRef = useRef(focadoId);
   focadoRef.current = focadoId;
 
@@ -122,6 +126,39 @@ export function Mesa({ perfil = 'iniciais', filtroEtapa = null }: PropsMesa) {
     return projeto.objetos
       .filter((o) => !filtroEtapa || o.etapa === etapaNova)
       .map((o) => ({ x: o.x, y: o.y, l: o.l, a: o.a }));
+  }
+
+  /** Põe na mesa uma tabela com a coleção e um quadro de texto com os créditos (um só passo no desfazer). */
+  function usarColecao(colecao: Colecao, creditos: string) {
+    try {
+      const modelo = fabricarObjeto('tabela', {});
+      const caixas = caixasOcupadas();
+      const pos = posicaoLivre(caixas, modelo.l, modelo.a, larguraDaMesa());
+      const tabela = fabricarObjeto('tabela', { ...pos, etapa: 'dados', estado: { colecaoId: colecao.id } });
+      executar(criarObjetoComColecao(`Adicionar dados '${colecao.nome}'`, colecao, tabela));
+      const modeloTexto = fabricarObjeto('texto', { l: 440, a: 220 });
+      const pos2 = posicaoLivre([...caixas, { x: tabela.x, y: tabela.y, l: tabela.l, a: tabela.a }], modeloTexto.l, modeloTexto.a, larguraDaMesa());
+      executar(criarObjeto(fabricarObjeto('texto', { ...pos2, l: 440, a: 220, etapa: 'dados', estado: { texto: creditos } })));
+      selarHistorico();
+      focar(tabela.id);
+      mostrarObjeto(tabela.id);
+      setAviso(t.mesa.bases.aviso(colecao.nome));
+    } catch (erro) {
+      setAviso(erro instanceof Error ? erro.message : t.mesa.erroGenerico);
+    }
+  }
+
+  function usarBase(base: BaseDeDados) {
+    usarColecao(colecaoDaBase(base), t.mesa.bases.creditos(base.fonte, base.licenca));
+  }
+
+  async function importarCsv(arquivo: File) {
+    try {
+      const nome = arquivo.name.replace(/\.[^.]+$/, '');
+      usarColecao(colecaoDeCsv(await arquivo.text(), nome), t.mesa.bases.creditosImportado(arquivo.name));
+    } catch (erro) {
+      setAviso(erro instanceof Error && erro.message ? erro.message : t.mesa.bases.erroLeitura);
+    }
   }
 
   function organizar() {
@@ -248,9 +285,39 @@ export function Mesa({ perfil = 'iniciais', filtroEtapa = null }: PropsMesa) {
         </div>
       </GrupoNomeado>
   );
+  const grupoBases = (
+    <div className="barra-grupo" role="group" aria-label={t.mesa.bases.titulo}>
+        <Menu
+          className="menu-bases"
+          icone="tabela"
+          texto={t.mesa.bases.botao}
+          rotulo={t.mesa.bases.titulo}
+          alinhar="inicio"
+          itens={[
+            ...BASES.map((b) => ({ rotulo: b.nome, aoEscolher: () => usarBase(b) })),
+            { rotulo: t.mesa.bases.importar, aoEscolher: () => entradaCsv.current?.click() },
+          ]}
+        />
+        <input
+          ref={entradaCsv}
+          type="file"
+          accept=".csv,text/csv,text/plain"
+          hidden
+          aria-hidden="true"
+          tabIndex={-1}
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            e.target.value = '';
+            if (f) void importarCsv(f);
+          }}
+        />
+    </div>
+  );
   const ferramentasMesa = (
     <>
       {grupoHistorico}
+      <Separador />
+      {grupoBases}
       <Separador />
       {grupoNovo}
     </>
@@ -265,7 +332,7 @@ export function Mesa({ perfil = 'iniciais', filtroEtapa = null }: PropsMesa) {
         <>
           {encaixes.novo ? (
             <>
-              <Encaixar encaixe={encaixes.mesa}>{grupoHistorico}</Encaixar>
+              <Encaixar encaixe={encaixes.mesa}>{grupoHistorico}<Separador />{grupoBases}</Encaixar>
               <Encaixar encaixe={encaixes.novo}>{grupoNovo}</Encaixar>
             </>
           ) : (

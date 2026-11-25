@@ -173,3 +173,7 @@ html, body { overflow-x: hidden; }
 .botao-texto.botao-concluir:not([data-concluida='true']) { background: var(--cor-camada); color: var(--cor-tinta); }
 .barra-contextual:empty { display: none; min-height: 0; margin: 0; }
 .faixa-ciclo[data-etapa='problema'] .faixa-pergunta { flex: 3 1 380px; }
+
+/* Bases de dados na barra superior */
+.menu-bases .menu-botao { gap: 6px; font-size: var(--t-pequeno); font-weight: 600; color: var(--cor-tinta); white-space: nowrap; padding: 0 var(--e2); width: auto; }
+.menu-bases .menu-botao svg:first-child { width: 20px; height: 20px; }
