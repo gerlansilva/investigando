@@ -1,0 +1,164 @@
+/*
+  Ajustes de acessibilidade (fase 9), importados por último: valem sobre a paleta e os estilos de cada objeto.
+  Cobrem: alvos de toque >= 40px, borda de campos com contraste >= 3:1 (WCAG 1.4.11), pular para a mesa,
+  quebra de linha das barras em telas estreitas (sem rolagem horizontal) e foco sempre visível.
+*/
+:root { --alvo-minimo: 40px; }
+.app[data-perfil='finais'] { --alvo: 40px; }
+
+/* ---------- alvos de toque e de clique ---------- */
+.etapa-botao, .botao-texto, .botao-texto.botao-concluir, .menu-botao, .menu-item, .botao, .botao-pequeno, .botao-icone,
+.campo-perfil select, .grafico-campo, .grafico-forma, .grafico-deslizante, .pergunta-campo textarea,
+.simulador-texto, .simulador-numero, .simulador select, .simulador-botao, .simulador-botao-pequeno,
+.simulador__secao > summary, .simulador-marca, .ficha-valor, .convite-card {
+  min-height: var(--alvo-minimo);
+}
+.menu-botao, .botao-icone, .grafico-forma, .simulador-botao-pequeno, .simulador-cor { min-width: var(--alvo-minimo); }
+.simulador-cor { height: var(--alvo-minimo); }
+.tabela-celula { height: var(--alvo-minimo); }
+.objeto-barra { height: var(--alvo-minimo); }
+.objeto-menu .menu-botao { margin: -6px 0; }
+.objeto-alca { width: var(--alvo-minimo); height: var(--alvo-minimo); }
+.objeto-alca::after { right: 10px; bottom: 10px; }
+
+/* ---------- campos: a borda precisa ser vista (3:1 sobre o branco) ---------- */
+.campo-perfil select, .grafico-campo, .simulador-texto, .simulador-numero, .simulador select, .pergunta-campo textarea,
+.campo input, .campo select, .tabela-painel input:not([type='radio']):not([type='checkbox']), .tabela-painel select {
+  border-color: var(--cor-borda-forte);
+}
+.ficha-valor { border-bottom-color: var(--cor-borda-forte); }
+.grafico-campo[aria-invalid='true'] { border-color: var(--cor-perigo); }
+
+/* ---------- pular para a mesa ---------- */
+.pular-para-mesa {
+  position: absolute; left: var(--e2); top: -100px; z-index: 100; display: inline-flex; align-items: center; min-height: var(--alvo-minimo); padding: 0 var(--e4);
+  background: var(--cor-tinta); color: var(--cor-sobre-destaque); border-radius: var(--raio); font-weight: 600; text-decoration: none;
+}
+.pular-para-mesa:focus { top: var(--e2); }
+.mesa:focus { outline: none; }
+.mesa:focus-visible { outline: 2px solid var(--cor-foco); outline-offset: -2px; }
+
+/* ---------- telas estreitas: tudo quebra de linha, nada rola na horizontal ---------- */
+.barra-contextual { overflow-x: visible; display: flex; flex-wrap: wrap; align-items: center; gap: var(--e1) var(--e3); }
+.barra-contextual > * { flex-shrink: 1; min-width: 0; }
+.barra-contextual .ferramentas, .barra-contextual .barra-grupo, .barra-contextual .grupo-nomeado,
+.barra-contextual .ferramentas-local { flex-wrap: wrap; flex: 0 1 auto; }
+.etapas { min-width: 0; max-width: 100%; }
+.etapas ol { flex-wrap: wrap; }
+.aviso-texto { min-width: 0; overflow-wrap: anywhere; }
+.barra-marca, .barra-titulo { min-width: 0; }
+html, body { overflow-x: hidden; }
+
+/* ---------- foco ---------- */
+.ferramenta:focus-visible, .etapa-botao:focus-visible, .botao-texto:focus-visible, .menu-botao:focus-visible,
+.convite-card:focus-visible, .simulador-botao:focus-visible, .objeto-barra:focus-visible, .objeto-alca:focus-visible {
+  outline: 3px solid var(--cor-foco); outline-offset: 2px; position: relative; z-index: 1;
+}
+.objeto-barra:focus-visible, .objeto-alca:focus-visible { outline-offset: -3px; }
+.objeto-alca:focus-visible { opacity: 1; }
+
+/* ---------- menos movimento: vale também para a paleta e os efeitos de pairar ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; transition-delay: 0s !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+  .convite-card:hover, .simulador-roleta[data-clicavel]:hover, .simulador-misturador[data-clicavel]:hover { transform: none !important; }
+}
+
+/* ---------- topo compacto (altura reservada constante: nada pula entre etapas) ---------- */
+:root { --topo-faixa: 48px; }
+/* faixa contextual: sempre a mesma altura, com objeto em foco ou sem; ferramentas com ícone e rótulo em linha */
+.barra-contextual, .barra-contextual:empty {
+  box-sizing: border-box; min-height: var(--topo-faixa); margin-top: 4px; padding: 0 var(--e2); align-content: center; align-items: center;
+}
+.barra-contextual .ferramenta { flex-direction: row; gap: 6px; min-height: var(--alvo-minimo); padding: 0 var(--e2); }
+.barra-contextual .ferramenta-rotulo { max-width: none; white-space: nowrap; }
+.barra-contextual .ferramentas, .barra-contextual .barra-grupo, .barra-contextual .grupo-nomeado, .barra-contextual .ferramentas-local { gap: 2px; }
+.barra-contextual .objeto-menu .menu-botao { margin: 0; }
+.barra-linha { padding-block: 4px; }
+.faixa-ciclo { margin-top: 4px; }
+.faixa-guia { padding-block: 0 var(--e1); }
+.guia { line-height: 1.25; }
+.botao-texto.botao-concluir { min-height: var(--alvo-minimo); }
+
+/* ícone sozinho quando falta largura; o rótulo continua como nome acessível e aparece em hover (title) */
+@media (max-width: 1099px) {
+  .barra-linha .ferramenta-rotulo, .campo-perfil > span {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .barra-contextual .ferramenta { padding: 0; justify-content: center; min-width: var(--alvo-minimo); }
+  .barra-marca { max-width: 150px; }
+  .barra-titulo { max-width: 140px; }
+  .faixa-ciclo .botao-rotulo:not(:only-child) { white-space: nowrap; }
+}
+
+/* abaixo de 800: trilha com só a etapa atual nomeada, ações na mesma linha e a pergunta numa linha só */
+@media (max-width: 1099px) {
+  .etapa-botao:not([data-atual='true']) .etapa-nome { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .etapa-botao { padding: 0 var(--e2); }
+  .etapas ol { gap: 2px; }
+  .faixa-ciclo .botao-texto:not(.botao-concluir) .botao-rotulo { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .faixa-ciclo .botao-texto:not(.botao-concluir) { min-width: var(--alvo-minimo); padding: 0; }
+}
+@media (max-width: 799px) {
+  .faixa-linha { column-gap: var(--e2); }
+  .faixa-ciclo .faixa-acoes { margin-left: auto; }
+  .faixa-ciclo .faixa-pergunta, .faixa-ciclo:not([data-etapa='problema']) .faixa-pergunta { order: 3; flex: 1 1 100%; min-width: 0; }
+  .pergunta-campo textarea { text-overflow: ellipsis; white-space: nowrap; }
+  .faixa-guia { flex-wrap: nowrap; min-width: 0; }
+  .guia { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dicas-pergunta { flex-wrap: nowrap; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; min-width: 0; }
+}
+
+/* pergunta e ações dividem a linha da trilha quando cabem */
+.faixa-pergunta, .faixa-ciclo:not([data-etapa='problema']) .faixa-pergunta { flex: 1 1 200px; min-width: 200px; }
+.pergunta-campo textarea { min-height: calc(var(--alvo-minimo) - 2px); }
+@media (max-width: 799px) {
+  .faixa-ciclo .botao-texto:not(.botao-concluir) .botao-rotulo { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .faixa-ciclo .botao-texto:not(.botao-concluir) { min-width: var(--alvo-minimo); padding: 0; }
+  .botao-texto.botao-concluir { padding: 0 var(--e3); }
+  .barra-linha { gap: 2px var(--e1); }
+  .barra-linha .separador { margin: 0; }
+  .barra-marca { max-width: 104px; }
+  .barra-titulo { max-width: 100px; }
+  .campo-perfil select { padding: 0 var(--e2); max-width: 128px; }
+}
+@media (max-width: 1099px) { .faixa-pergunta, .faixa-ciclo:not([data-etapa='problema']) .faixa-pergunta { flex-basis: 120px; min-width: 120px; } }
+@media (max-width: 899px) {
+  .faixa-ciclo .botao-concluir .botao-rotulo { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .botao-texto.botao-concluir { min-width: var(--alvo-minimo); padding: 0; }
+}
+
+/* altura da linha da trilha igual em todas as etapas: a pergunta ocupa uma linha e só cresce com o foco */
+.faixa-linha { min-height: 48px; }
+.pergunta-campo textarea { box-sizing: border-box; min-width: 0; field-sizing: fixed; height: var(--alvo-minimo); min-height: var(--alvo-minimo); max-height: var(--alvo-minimo); overflow: hidden; }
+.pergunta-campo textarea:focus { overflow-y: auto; }
+.roteiro-campo textarea { min-height: 44px; }
+.faixa-guia, .faixa-guia .guia { min-height: 20px; }
+@media (max-width: 1099px) {
+  .pergunta-rotulo { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+@media (max-width: 699px) {
+  .barra-linha { column-gap: 2px; }
+  .barra-linha .separador { display: none; }
+  .barra-marca { max-width: 108px; }
+  .barra-marca h1 { font-size: 15px; white-space: nowrap; }
+  .campo-perfil select { max-width: 84px; padding: 0 var(--e1); }
+}
+@media (max-width: 799px) {
+  .faixa-ciclo .faixa-pergunta, .faixa-ciclo:not([data-etapa='problema']) .faixa-pergunta { order: 3; flex: 1 1 100%; min-width: 0; }
+}
+
+/* barra contextual: abaixo de 1600px só ícones; o rótulo aparece num cartão branco ao pairar ou focar; uma linha, altura constante */
+@media (max-width: 1599px) {
+  .barra-contextual .ferramenta-rotulo {
+    position: absolute; top: calc(100% + 4px); left: 50%; transform: translateX(-50%); z-index: 40; padding: 4px var(--e2);
+    background: #fff; color: var(--cor-tinta); border-radius: 10px; box-shadow: 0 2px 10px rgb(22 17 94 / 0.18);
+    opacity: 0; pointer-events: none; white-space: nowrap;
+  }
+  .barra-contextual .ferramenta:hover .ferramenta-rotulo, .barra-contextual .ferramenta:focus-visible .ferramenta-rotulo { opacity: 1; }
+  .barra-contextual .ferramenta { padding: 0; justify-content: center; min-width: var(--alvo-minimo); }
+}
+@media (max-width: 1099px) {
+  .barra-contextual { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; }
+  .barra-contextual .ferramentas, .barra-contextual .barra-grupo, .barra-contextual .grupo-nomeado, .barra-contextual .ferramentas-local { flex-wrap: nowrap; flex: none; }
+}
+@media (max-width: 799px) { .faixa-ciclo .faixa-pergunta { min-height: var(--alvo-minimo); } }

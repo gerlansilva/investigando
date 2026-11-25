@@ -1,0 +1,101 @@
+/* Estilos do simulador: só variáveis CSS (a paleta é trocada nas variáveis). Cores entre parênteses de var() são reservas. */
+.simulador {
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--cor-texto);
+  background: var(--cor-superficie);
+  font-size: var(--t-base);
+}
+
+
+.simulador-botao {
+  min-height: var(--alvo);
+  min-width: var(--alvo);
+  padding: 6px 14px;
+  font: inherit;
+  font-weight: 500;
+  color: var(--cor-texto);
+  background: var(--cor-superficie-2);
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio);
+  cursor: pointer;
+}
+.simulador-botao:hover:not(:disabled) { border-color: var(--cor-destaque); }
+.simulador-botao:disabled { opacity: 0.5; cursor: not-allowed; }
+.simulador-botao[aria-pressed='true'] { background: var(--cor-destaque-fundo); border-color: var(--cor-destaque); color: var(--cor-destaque); }
+.simulador-botao--destaque { background: var(--cor-destaque); color: var(--cor-sobre-destaque); border-color: var(--cor-destaque); }
+.simulador-botao:focus-visible, .simulador-botao-pequeno:focus-visible,
+.simulador input:focus-visible, .simulador select:focus-visible, .simulador summary:focus-visible { outline: 2px solid var(--cor-foco); outline-offset: 2px; }
+
+.simulador-botao-pequeno {
+  min-height: var(--alvo);
+  min-width: var(--alvo);
+  font: inherit;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--cor-perigo);
+  background: transparent;
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio);
+  cursor: pointer;
+}
+
+.simulador > * { flex-shrink: 0; }
+.simulador__palco { display: flex; justify-content: center; align-items: center; min-height: 150px; }
+.simulador-roleta, .simulador-misturador { width: 100%; max-width: 220px; height: auto; max-height: 220px; }
+.simulador-roleta__rotulo { font-size: 11px; font-weight: 500; fill: var(--cor-texto); paint-order: stroke; stroke: var(--cor-superficie); stroke-width: 3px; }
+.simulador-roleta__ponteiro polygon, .simulador-roleta__ponteiro circle { fill: var(--cor-texto); stroke: var(--cor-superficie); stroke-width: 1.5px; }
+.simulador-roleta__fatia { stroke: var(--cor-superficie); stroke-width: 2px; }
+.simulador-misturador__bola { stroke: var(--cor-texto); stroke-width: 1.5px; }
+.simulador-misturador__pote { stroke: var(--cor-borda); }
+.simulador-misturador__boca { stroke: var(--cor-borda); }
+.simulador-misturador__bola[data-saiu='sim'] { stroke-width: 3px; }
+.simulador-contador {
+  display: flex; align-items: center; justify-content: center;
+  width: 150px; height: 150px; border-radius: 50%;
+  border: 1px solid var(--cor-borda-forte); background: var(--cor-superficie-2);
+}
+.simulador-contador__valor { font-size: 3rem; font-weight: 600; }
+
+.simulador__saida { margin: 0; min-height: 1.4em; text-align: center; font-weight: 500; font-size: 1.1rem; }
+.simulador__progresso { display: flex; align-items: center; gap: 8px; }
+.simulador__progresso progress { flex: 1; height: 16px; accent-color: var(--cor-destaque); }
+.simulador__erro { margin: 0; padding: 8px 12px; font-weight: 500; color: var(--cor-perigo); border: 1px solid var(--cor-perigo); border-radius: var(--raio); }
+.simulador__aviso { margin: 0; padding: 8px 12px; font-weight: 500; color: var(--cor-sucesso); border: 1px solid var(--cor-sucesso); border-radius: var(--raio); }
+.simulador__nota { margin: 0; font-size: 0.9rem; }
+
+.simulador__secao { border: 0; border-top: 1px solid var(--cor-linha); border-radius: 0; padding: 0; background: transparent; }
+.simulador__secao > summary { min-height: var(--alvo); display: flex; align-items: center; cursor: pointer; font-weight: 600; }
+.simulador-grupo { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.simulador-painel { display: flex; flex-direction: column; gap: 8px; }
+.simulador-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.simulador-linha { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.simulador-linha--grade { align-items: flex-start; gap: 12px; }
+.simulador-linha--coluna { flex-direction: column; align-items: stretch; }
+.simulador-campo { display: flex; flex-direction: column; gap: 4px; font-weight: 500; }
+.simulador-campo small { font-weight: 400; max-width: 22ch; }
+.simulador-marca { display: flex; align-items: center; gap: 8px; min-height: var(--alvo); font-weight: 600; }
+.simulador-marca input { width: 22px; height: 22px; }
+.simulador-texto, .simulador-numero, .simulador select {
+  min-height: var(--alvo);
+  box-sizing: border-box;
+  font: inherit;
+  padding: 4px 8px;
+  color: var(--cor-texto);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: 8px;
+}
+.simulador-texto { flex: 1 1 8ch; min-width: 8ch; }
+.simulador-numero { width: 7ch; }
+.simulador-cor { width: var(--alvo); height: var(--alvo); padding: 0; border: 1px solid var(--cor-borda-forte); border-radius: 8px; background: transparent; }
+.simulador-porcento { min-width: 5ch; font-size: 0.9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .simulador * { transition: none !important; animation: none !important; }
+}

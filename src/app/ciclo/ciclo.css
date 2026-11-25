@@ -1,0 +1,52 @@
+.ciclo { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+
+/* faixa única do ciclo: abas, pergunta e ações */
+.faixa-ciclo { position: relative; background: var(--cor-superficie); border-bottom: 1px solid var(--cor-borda); }
+.faixa-linha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e1) var(--e3); padding: 0 var(--e3); }
+.etapas ol { display: flex; margin: 0; padding: 0; list-style: none; }
+.etapa-botao {
+  --cor-da-etapa: var(--cor-texto-suave);
+  position: relative; display: flex; align-items: center; gap: var(--e1); min-height: var(--alvo); padding: 0 var(--e3);
+  border: 0; background: transparent; color: var(--cor-texto-suave); cursor: pointer; font-weight: 500; font-size: var(--t-base);
+  transition: background-color var(--movimento), color var(--movimento);
+}
+.etapa-botao[data-etapa='problema'] { --cor-da-etapa: var(--cor-etapa-problema); }
+.etapa-botao[data-etapa='plano'] { --cor-da-etapa: var(--cor-etapa-plano); }
+.etapa-botao[data-etapa='dados'] { --cor-da-etapa: var(--cor-etapa-dados); }
+.etapa-botao[data-etapa='analise'] { --cor-da-etapa: var(--cor-etapa-analise); }
+.etapa-botao[data-etapa='conclusao'] { --cor-da-etapa: var(--cor-etapa-conclusao); }
+.etapa-botao:hover { background: var(--cor-hover); color: var(--cor-texto); }
+.etapa-botao .etapa-icone { display: inline-flex; }
+.etapa-botao[data-atual='true'] { color: var(--cor-texto); font-weight: 600; box-shadow: inset 0 -3px 0 var(--cor-da-etapa); }
+.etapa-botao[data-atual='true'] .etapa-icone { color: var(--cor-da-etapa); }
+.etapa-check { display: inline-flex; color: var(--cor-sucesso); }
+
+.faixa-pergunta { flex: 1 1 260px; display: flex; align-items: center; gap: var(--e2); min-width: 0; }
+.pergunta-campo { flex: 1; display: flex; align-items: center; gap: var(--e2); min-width: 0; }
+.pergunta-rotulo { font-size: var(--t-pequeno); font-weight: 500; color: var(--cor-texto-suave); white-space: nowrap; }
+.pergunta-campo textarea { flex: 1; min-width: 0; min-height: calc(var(--alvo) - 8px); max-height: 5.5em; padding: 6px var(--e2); border: 1px solid var(--cor-borda-forte); border-radius: var(--raio); resize: none; field-sizing: content; font-size: var(--t-base); line-height: 1.3; background: var(--cor-superficie); }
+.pergunta-lembrete { margin: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--t-base); }
+.pergunta-lembrete strong { font-weight: 500; color: var(--cor-texto-suave); }
+.moldes .menu-botao { font-size: var(--t-pequeno); font-weight: 500; padding: 0 var(--e2); border: 1px solid var(--cor-borda); }
+.faixa-acoes { display: flex; align-items: center; gap: var(--e1); margin-left: auto; }
+.botao-concluir[data-concluida='true'] { color: var(--cor-sucesso); }
+.botao-concluir:disabled { opacity: 0.55; }
+
+.faixa-guia { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--e4); padding: 0 var(--e3) var(--e2); }
+.guia { margin: 0; font-size: var(--t-base); font-weight: 500; color: var(--cor-texto-suave); }
+.dicas-pergunta { display: flex; flex-wrap: wrap; gap: 0 var(--e3); margin: 0; padding: 0; list-style: none; font-size: var(--t-pequeno); color: var(--cor-texto); }
+.dica-bloqueio { font-size: var(--t-pequeno); font-weight: 500; color: var(--cor-texto-suave); }
+.roteiro { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--e2) var(--e3); padding: 0 var(--e3) var(--e3); }
+.roteiro-campo { display: flex; flex-direction: column; gap: var(--e1); font-size: var(--t-pequeno); font-weight: 500; color: var(--cor-texto-suave); }
+.roteiro-campo textarea { padding: 6px var(--e2); border: 1px solid var(--cor-borda-forte); border-radius: var(--raio); resize: vertical; font-size: var(--t-base); font-weight: 400; color: var(--cor-texto); }
+
+.aviso-revisao { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--e3); margin: 0; padding: 0 var(--e3); background: var(--cor-aviso-fundo); border-bottom: 1px solid var(--cor-aviso-borda); font-size: var(--t-base); }
+.aviso-revisao span { flex: 1; }
+
+/* resumo como popover logo abaixo da faixa */
+.resumo { position: absolute; right: var(--e3); top: 100%; z-index: 30; width: min(520px, calc(100% - 24px)); max-height: 60vh; overflow: auto; padding: var(--e3) var(--e4); background: var(--cor-superficie); border: 1px solid var(--cor-borda); border-radius: var(--raio-janela); box-shadow: var(--sombra-menu); }
+.resumo header { display: flex; justify-content: space-between; align-items: center; gap: var(--e2); }
+.resumo h2 { margin: 0; font-size: var(--t-media); font-weight: 600; color: var(--cor-texto); }
+.resumo dt { margin-top: var(--e2); font-size: var(--t-pequeno); font-weight: 600; color: var(--cor-texto-suave); }
+.resumo dd { margin: 2px 0 0; white-space: pre-wrap; }
+.resumo-objetos { display: flex; flex-wrap: wrap; gap: var(--e1) var(--e4); margin: 0; padding: 0; list-style: none; }

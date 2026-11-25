@@ -1,0 +1,98 @@
+/*
+  Tema do Investigando — interface neutra (fundo branco, cinzas azulados e um índigo de seleção).
+  Cor forte fica só nos dados/atributos e no fio da etapa ativa. Toda cor da interface vem destas variáveis;
+  para trocar a paleta, edite só este arquivo.
+  Contrastes conferidos (sobre #ffffff): texto 16,7:1 · texto suave 6,9:1 · índigo de foco/seleção 9,7:1 ·
+  borda de campo 3,4:1 · perigo 6,1:1.
+*/
+:root {
+  /* superfícies e linhas */
+  --cor-fundo: #ffffff;
+  --cor-mesa: #ffffff;
+  --cor-superficie: #ffffff;
+  --cor-superficie-2: #f7f7fa;
+  --cor-barra-objeto: #f3f3f7;
+  --cor-barra-objeto-foco: #ececf3;
+  --cor-painel: #f7f7fa;
+  --cor-cabecalho-tabela: #f7f7fa;
+  --cor-celula-calculada: #f3f6f1;
+  --cor-ficha: #ffffff;
+  --cor-linha: #e4e4ec;
+  --cor-linha-suave: #efeff5;
+  --cor-borda: #d6d6e0;
+  --cor-borda-forte: #8a8a9e;
+  --cor-grade-pontos: #ececf2;
+
+  /* texto */
+  --cor-texto: #1a1a2e;
+  --cor-texto-suave: #5a5a70;
+  --cor-sobre-destaque: #ffffff;
+
+  /* ação e seleção */
+  --cor-destaque: #3730aa;
+  --cor-destaque-fundo: #ecebfb;
+  --cor-foco: #3730aa;
+  --cor-selecao: #e3e1fa;
+  --cor-hover: #f0f0f6;
+  --cor-perigo: #c0261c;
+  --cor-perigo-fundo: #fdeceb;
+  --cor-sucesso: #1a7f54;
+  --cor-aviso-fundo: #fff6d6;
+  --cor-aviso-borda: #a87b00;
+  --cor-acento: #ff653f;
+  --cor-tinta: #16115e;
+  --cor-acento-forte: #e8501f;
+
+  /* cor de cada tipo de objeto (fio no topo da janela e ícone de criar) */
+  --cor-tipo-tabela: #3730aa;
+  --cor-tipo-fichas: #b53a8c;
+  --cor-tipo-grafico: #12857c;
+  --cor-tipo-simulador: #e8501f;
+  --cor-tipo-texto: #b07a00;
+  --cor-tipo-imagem: #16115e;
+
+  /* etapas do ciclo investigativo (aparecem só no fio da etapa ativa) */
+  --cor-etapa-problema: #e8501f;
+  --cor-etapa-plano: #c98a00;
+  --cor-etapa-dados: #3730aa;
+  --cor-etapa-analise: #12857c;
+  --cor-etapa-conclusao: #b53a8c;
+
+  /* sombra, raio e movimento */
+  --sombra-janela: 0 1px 2px rgb(26 26 46 / 0.06), 0 4px 14px rgb(26 26 46 / 0.08);
+  --sombra-menu: 0 2px 4px rgb(26 26 46 / 0.08), 0 8px 24px rgb(26 26 46 / 0.14);
+  --raio: 6px;
+  --raio-janela: 8px;
+  --movimento: 140ms cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* escala única de espaçamento */
+  --e1: 4px;
+  --e2: 8px;
+  --e3: 12px;
+  --e4: 16px;
+  --e5: 24px;
+
+  /* tipografia: uma família, quatro tamanhos, três pesos (400, 500, 600) */
+  --fonte: 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible Next', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --t-pequeno: 0.75rem;
+  --t-base: 0.875rem;
+  --t-media: 1rem;
+  --t-grande: 1.25rem;
+
+  /* tamanho dos alvos e ícones: anos iniciais grandes, anos finais mais densos */
+  --alvo: 44px;
+  --icone: 24px;
+}
+
+.app[data-perfil='iniciais'] {
+  --alvo: 44px;
+  --icone: 24px;
+  --t-pequeno: 0.8125rem;
+  --t-base: 1rem;
+  --t-media: 1.0625rem;
+}
+
+.app[data-perfil='finais'] {
+  --alvo: 32px;
+  --icone: 20px;
+}

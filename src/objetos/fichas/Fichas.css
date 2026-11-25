@@ -1,0 +1,15 @@
+.fichas { height: 100%; overflow: auto; padding: var(--e3); box-sizing: border-box; }
+.fichas-vazio { color: var(--cor-texto-suave); }
+.fichas-grade { display: grid; gap: var(--e3); align-content: start; }
+.ficha { position: relative; padding: var(--e2) var(--e3) var(--e2); background: var(--cor-ficha); border: 1px solid var(--cor-borda); border-radius: var(--raio-janela); cursor: pointer; }
+.ficha:hover { border-color: var(--cor-borda-forte); }
+.ficha.selecionada { background: var(--cor-selecao); border-color: var(--cor-destaque); }
+.ficha-numero { font-size: var(--t-pequeno); font-weight: 600; color: var(--cor-texto-suave); margin-bottom: 2px; }
+.ficha-campo { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 0; padding: var(--e1) 0; border-top: 1px solid var(--cor-linha-suave); }
+.ficha-rotulo { display: flex; align-items: center; gap: 6px; min-width: 0; font-size: var(--t-pequeno); font-weight: 500; color: var(--cor-texto-suave); }
+.ficha-amostra { flex: none; width: 10px; height: 10px; border-radius: 50%; }
+.ficha-nome { overflow-wrap: anywhere; }
+.ficha-valor { min-height: calc(var(--alvo) - 8px); box-sizing: border-box; width: 100%; padding: 0 var(--e1); border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--cor-texto); font-weight: 500; }
+.ficha-valor:hover:not([readonly]) { border-color: var(--cor-borda); }
+.ficha-valor:focus-visible { background: var(--cor-superficie); }
+.ficha-erro { grid-column: 1 / -1; color: var(--cor-perigo); font-size: var(--t-pequeno); font-weight: 500; }

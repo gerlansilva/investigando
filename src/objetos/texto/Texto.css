@@ -1,0 +1,4 @@
+.texto-editor { flex: 1; width: 100%; box-sizing: border-box; resize: none; border: none; padding: var(--e3); font-size: var(--t-media); line-height: 1.5; background: var(--cor-superficie); color: var(--cor-texto); }
+.texto-editor:focus-visible { outline-offset: -2px; }
+
+.texto-editor { background: var(--cor-camada); border: 0; border-radius: 12px; text-decoration: none; margin: var(--e2); width: calc(100% - 2 * var(--e2)); }

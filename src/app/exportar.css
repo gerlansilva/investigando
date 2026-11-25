@@ -1,0 +1,14 @@
+/* Impressão da mesa: só a mesa de trabalho aparece, sem barras, avisos nem trilhos. */
+@media print {
+  @page { margin: 12mm; }
+  html, body, #raiz, .app, .corpo, .mesa-raiz { height: auto !important; overflow: visible !important; background: #fff !important; }
+  .barra, .pular-para-mesa, .aviso, .trilho, .mesa-barra, .objeto-alca,
+  .grafico-barra, .app-entrada-arquivo { display: none !important; }
+  .mesa { overflow: visible !important; background: #fff !important; background-image: none !important; }
+  .objeto { box-shadow: none !important; border-radius: var(--raio-janela); break-inside: avoid; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+@media print {
+  .faixa-acoes, .etapas, .objeto-menu, .objeto-alca, .grafico-faixa, .tabela-rodape, .barra-contextual, .trilho { display: none !important; }
+}

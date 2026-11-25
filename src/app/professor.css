@@ -1,0 +1,27 @@
+/* Modo professor e registro de pesquisa: cartões arredondados, fundo branco, sem bordas coloridas. */
+.professor { position: relative; margin-left: auto; }
+.professor-botao { color: var(--cor-texto-suave); }
+.professor-botao[data-ativo='true'] { color: var(--cor-texto); background: var(--cor-hover); border-radius: 999px; }
+.professor-cartao {
+  position: absolute; top: 100%; right: 0; z-index: 50; width: min(440px, 92vw); max-height: 80vh; overflow: auto;
+  display: flex; flex-direction: column; gap: var(--e3); padding: var(--e4);
+  background: var(--cor-fundo); border: 0; border-radius: 16px; box-shadow: var(--sombra-menu); text-decoration: none;
+}
+.professor-cabeca { display: flex; align-items: center; justify-content: space-between; gap: var(--e3); }
+.professor-cabeca h2, .professor-secao h3 { margin: 0; font-size: var(--t-media); font-weight: 600; color: var(--cor-texto); }
+.professor-secao { display: flex; flex-direction: column; gap: var(--e2); padding: var(--e3); background: var(--cor-superficie-2); border-radius: 12px; }
+.professor-grupo { display: flex; flex-wrap: wrap; gap: var(--e1) var(--e3); margin: 0; padding: 0; border: 0; }
+.professor-grupo legend { padding: 0; margin-bottom: var(--e1); font-size: var(--t-pequeno); font-weight: 600; color: var(--cor-texto-suave); }
+.professor-opcao { display: flex; align-items: center; gap: var(--e2); min-height: 28px; font-size: var(--t-base); }
+.professor-campo { font-size: var(--t-base); font-weight: 500; }
+.professor-dica { margin: 0; font-size: var(--t-pequeno); color: var(--cor-texto-suave); }
+.professor-erro { margin: 0; padding: var(--e2) var(--e3); background: var(--cor-perigo-fundo); color: var(--cor-perigo); border-radius: 10px; font-size: var(--t-base); }
+.professor-linha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e2); }
+.professor-confirma { display: inline-flex; align-items: center; gap: var(--e2); font-size: var(--t-pequeno); }
+.professor-cartao input[type='password'], .professor-cartao select { min-height: 32px; padding: 0 var(--e3); border: 1px solid var(--cor-borda); border-radius: 10px; background: var(--cor-fundo); color: var(--cor-texto); font-size: var(--t-base); }
+.registro-tabela-caixa { max-height: 220px; overflow: auto; background: var(--cor-fundo); border-radius: 10px; }
+.registro-tabela { width: 100%; border-collapse: collapse; font-size: var(--t-pequeno); text-align: left; }
+.registro-tabela th, .registro-tabela td { padding: var(--e1) var(--e2); text-align: left; text-decoration: none; }
+.registro-tabela th { position: sticky; top: 0; background: var(--cor-superficie-2); font-weight: 600; }
+.registro-tabela tbody tr:nth-child(even) { background: var(--cor-superficie-2); }
+.etapa-botao:disabled { opacity: 0.45; cursor: not-allowed; }

@@ -1,0 +1,10 @@
+export { criarComando, ErroComando, type Comando } from './base';
+export * from './objetos';
+export * from './dados';
+export * from './ciclo';
+export { adicionarColecao } from './adicionarColecao';
+export { adicionarCasosEmLote } from './adicionarCasosEmLote';
+export { limparCasos } from './limparCasos';
+export { registrarHistoricoEstatistica } from './registrarHistoricoEstatistica';
+export { registrarLoteSimulador, recomecarSimulador, type LoteColecao, type ParamsLoteSimulador } from './registrarLoteSimulador';
+export * from './professor';
