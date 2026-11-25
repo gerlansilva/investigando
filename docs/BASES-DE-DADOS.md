@@ -45,3 +45,16 @@ Altura, número do calçado, tempo até a escola, brincadeira favorita. A invest
 ## Pokémon e outras bases com marca registrada
 
 Não vão embutidas: nomes e personagens são marca de terceiros. Quem quiser usar importa o CSV por **Bases de dados → Importar arquivo CSV…**.
+
+## Bases adicionadas em 25/11/2026
+
+| Base | Casos | Licença | Alterações feitas |
+|---|---:|---|---|
+| Cereais matinais | 77 | CC BY-SA 3.0 | colunas e fabricantes em português; -1 vira célula vazia |
+| Incêndios florestais | 517 | CC BY 4.0 | colunas, meses e dias em português |
+| Tamanho de seres vivos | 106 | Apache-2.0 | só animais e plantas; nomes em português (texto da licença em `docs/licencas/Apache-2.0.txt`) |
+| Brasil nos Jogos Olímpicos | 3.848 | CC0 | só atletas do Brasil, sem os nomes; textos em português |
+
+Os créditos de cada base aparecem na tabela inserida no projeto. A licença CC BY-SA dos cereais vale para esses dados, não para o programa.
+
+**Fora do pacote** (importe pelo menu se quiser): Pokémon e Disney+ (marcas registradas de terceiros), Spotify, Bigfoot, Star Wars e Datasaurus (licença desconhecida ou pendente), e a base de sono do Kaggle (licença divergente).

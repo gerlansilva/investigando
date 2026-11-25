@@ -26,6 +26,17 @@ describe('bases embutidas', () => {
     expect(c.casos).toHaveLength(100);
     expect(c.atributos[0]!.nome).toBe('Animal');
   });
+  it('novas bases: tamanhos de linhas e ausentes', () => {
+    const n = (id: string) => colecaoDaBase(BASES.find((b) => b.id === id)!);
+    expect(n('cereais').casos).toHaveLength(77);
+    expect(n('incendios').casos).toHaveLength(517);
+    expect(n('tamanhos').casos).toHaveLength(106);
+    expect(n('olimpiadas-brasil').casos.length).toBeGreaterThan(3000);
+    const c = n('cereais');
+    const acucar = c.atributos.find((a) => a.nome === 'Açúcares')!;
+    expect(c.casos.some((k) => k.valores[acucar.id] === null)).toBe(true);
+    expect(c.casos.every((k) => k.valores[acucar.id] !== -1)).toBe(true);
+  });
   it('sono dos mamíferos: 83 espécies, ausentes preservados', () => {
     const c = colecaoDaBase(BASES.find((b) => b.id === 'sono')!);
     expect(c.casos).toHaveLength(83);
