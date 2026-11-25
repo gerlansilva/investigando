@@ -162,3 +162,7 @@ html, body { overflow-x: hidden; }
   .barra-contextual .ferramentas, .barra-contextual .barra-grupo, .barra-contextual .grupo-nomeado, .barra-contextual .ferramentas-local { flex-wrap: nowrap; flex: none; }
 }
 @media (max-width: 799px) { .faixa-ciclo .faixa-pergunta { min-height: var(--alvo-minimo); } }
+
+/* pergunta da turma: em linha única com reticências; ao focar, mostra tudo com rolagem */
+.pergunta-campo textarea { white-space: nowrap; text-overflow: ellipsis; padding-top: 0; padding-bottom: 0; line-height: calc(var(--alvo-minimo) - 2px); }
+.pergunta-campo textarea:focus { white-space: pre-wrap; text-overflow: clip; line-height: 1.3; padding-top: 6px; padding-bottom: 6px; }
