@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } f
 import { criarArmazem } from '../estado/store';
 import { ProvedorArmazem, useProjeto, type Armazem } from '../estado/usarArmazem';
 import { t } from '../i18n/pt-BR';
-import { EXTENSAO, mensagemDeErro, obterArquivos, type ProjetoAberto } from './arquivos';
+import { EXTENSAO, ehTauri, mensagemDeErro, obterArquivos, type ProjetoAberto } from './arquivos';
 import { Ciclo } from './ciclo/Ciclo';
 import { ContextoBarra } from './contextoBarra';
 import { Ferramenta, Separador } from './ui';
@@ -81,6 +81,15 @@ function Conteudo({ armazem }: { armazem: Armazem }) {
       setMensagem({ tipo: 'erro', texto: mensagemDeErro(erro) });
     }
   }, [arquivos, armazem]);
+
+  // Título da janela como nos programas de desktop: "Investigando - [nome do projeto]".
+  useEffect(() => {
+    const titulo = `${t.app.nome} - [${projeto.titulo}]`;
+    document.title = titulo;
+    if (ehTauri()) {
+      void import('@tauri-apps/api/window').then((j) => j.getCurrentWindow().setTitle(titulo)).catch(() => undefined);
+    }
+  }, [projeto.titulo]);
 
   useEffect(() => {
     const aoTecla = (e: KeyboardEvent) => {
