@@ -1,3 +1,4 @@
+import { FORMAS_ICONE, caminhoSvg } from './formas';
 import { useEffect, useId, useState } from 'react';
 import type { Atributo } from '../../modelo/tipos';
 import { Icone } from '../../app/icones';
@@ -189,7 +190,7 @@ export function FaixaDoGrafico(p: PropsPainel & { selecionados: string }) {
     if ((p.estado.filtro ?? '') !== textoFiltro && (p.estado.filtro ?? '').trim() !== textoFiltro.trim()) setTextoFiltro(p.estado.filtro ?? '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [p.estado.filtro]);
-  const formas: FormaIcone[] = ['circulo', 'quadrado'];
+  const formas: readonly FormaIcone[] = FORMAS_ICONE;
   const corValida = p.estado.corPor && p.atributos.some((a) => a.id === p.estado.corPor) ? p.estado.corPor : '';
   const eixoX = p.estado.x && p.atributos.some((a) => a.id === p.estado.x!.atributoId) ? p.estado.x : null;
   const eixoY = p.estado.y && p.atributos.some((a) => a.id === p.estado.y!.atributoId) ? p.estado.y : null;
@@ -227,13 +228,13 @@ export function FaixaDoGrafico(p: PropsPainel & { selecionados: string }) {
             onChange={(e) => { setTextoFiltro(e.target.value); p.aoMudar(definirFiltro(p.estado, e.target.value), 'Mudar filtro'); }} />
         </label>
       )}
-      {finais && (
-        <div className="grafico-variavel" role="group" aria-label={textos.forma}>
+      {(
+        <div className="grafico-variavel grafico-formas" role="group" aria-label={textos.forma}>
           <span className="grafico-variavel__nome" aria-hidden="true">{textos.icone}</span>
           {formas.map((f) => (
             <button key={f} type="button" className="botao-icone grafico-forma" aria-label={textos[f]} title={textos[f]} aria-pressed={p.estado.icone.forma === f}
               onClick={() => p.aoMudar(definirIcone(p.estado, { forma: f }), 'Mudar forma do ícone')}>
-              <Icone nome={f} />
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d={caminhoSvg(f)} fill="currentColor" /></svg>
             </button>
           ))}
         </div>

@@ -1,6 +1,7 @@
 // Estado do objeto gráfico (ver docs/CONTRATO-UI.md) e transformações puras sobre ele.
 // Sem React nem DOM: cada função devolve um novo estado e nunca altera o recebido.
 import { z } from 'zod';
+import { FORMAS_ICONE, type FormaIcone } from './formas';
 
 export type ModoEixo = 'separar' | 'ordenar' | 'empilhar' | 'intervalos';
 export const MODOS_EIXO: readonly ModoEixo[] = ['separar', 'ordenar', 'empilhar', 'intervalos'];
@@ -9,7 +10,7 @@ export const MODOS_EIXO: readonly ModoEixo[] = ['separar', 'ordenar', 'empilhar'
 export type Medida = 'media' | 'mediana' | 'moda' | 'contagem' | 'porcentagem';
 export const MEDIDAS: readonly Medida[] = ['media', 'mediana', 'moda', 'contagem', 'porcentagem'];
 
-export type FormaIcone = 'circulo' | 'quadrado';
+export type { FormaIcone };
 export type QualEixo = 'x' | 'y';
 
 export interface EixoCfg {
@@ -51,7 +52,7 @@ export const esquemaEstadoGrafico = z.object({
   corPor: z.string().min(1).optional(),
   icone: z
     .object({
-      forma: z.enum(['circulo', 'quadrado']).default('circulo'),
+      forma: z.enum(FORMAS_ICONE).default('circulo'),
       tamanho: z.number().finite().min(TAMANHO_ICONE_MIN).max(TAMANHO_ICONE_MAX).default(TAMANHO_ICONE_PADRAO),
     })
     .default({ forma: 'circulo', tamanho: TAMANHO_ICONE_PADRAO }),

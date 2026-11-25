@@ -222,7 +222,7 @@ describe('Grafico: filtro', () => {
 
 describe('Grafico: painel por perfil', () => {
   const avancados = [
-    'Ordenar', 'Intervalos', 'Média', 'Mediana', 'Moda', 'Porcentagem', 'Trocar eixos', 'Círculo', 'Quadrado', 'Salvar imagem',
+    'Ordenar', 'Intervalos', 'Média', 'Mediana', 'Moda', 'Porcentagem', 'Trocar eixos', 'Salvar imagem',
   ];
 
   it('iniciais mostra só Separar, Empilhar e Contar (e esconde as ferramentas avançadas)', () => {
@@ -236,6 +236,8 @@ describe('Grafico: painel por perfil', () => {
     expect(p.queryByLabelText('Mostrar só os casos em que')).toBeNull();
     expect(p.queryByLabelText('Colorir por')).toBeNull();
     expect(p.queryByLabelText('Tamanho do ícone', { exact: false })).toBeNull();
+    // os ícones (peixe, pinguim…) aparecem em todos os perfis
+    expect(p.getByRole('button', { name: 'Peixe' })).toBeInTheDocument();
     // mas ainda dá para escolher os atributos e remexer
     expect(p.getByLabelText('Atributo do eixo horizontal')).toBeInTheDocument();
     expect(p.getByRole('button', { name: 'Remexer' })).toBeInTheDocument();

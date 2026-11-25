@@ -1,5 +1,6 @@
 // Desenho em canvas 2D (pontos e primitivas vetoriais). Usado na tela e na exportação.
 import type { FormaIcone } from './estado';
+import { acrescentarForma } from './formas';
 import type { Primitiva } from './cena';
 
 export const COR_ANEL = '#111111';
@@ -16,12 +17,8 @@ export interface OpcoesPontos {
 }
 
 function caminho(ctx: CanvasRenderingContext2D, forma: FormaIcone, x: number, y: number, r: number): void {
-  if (forma === 'quadrado') {
-    ctx.rect(x - r, y - r, 2 * r, 2 * r);
-  } else {
-    ctx.moveTo(x + r, y);
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-  }
+  if (forma === 'quadrado') ctx.rect(x - r, y - r, 2 * r, 2 * r);
+  else acrescentarForma(ctx, forma, x, y, r);
 }
 
 /** Desenha os pontos (sem limpar o canvas). Pontos de mesma cor são agrupados num só traçado. */
