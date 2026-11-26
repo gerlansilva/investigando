@@ -1,6 +1,6 @@
 [package]
 name = "investigando"
-version = "0.0.1"
+version = "0.1.0"
 description = "Investigando: ciclo investigativo com dados para o ensino fundamental"
 edition = "2021"
 rust-version = "1.77"
